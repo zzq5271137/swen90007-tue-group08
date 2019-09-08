@@ -42,5 +42,4 @@ public class CustomerLoginServlet extends HttpServlet {
             response.sendRedirect("CustomerLoginSuccess.html");
         }
     }
-
 }

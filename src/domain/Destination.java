@@ -4,7 +4,11 @@ public class Destination {
     private int destination_id;
     private String address;
 
-    public int getDestination_id() {
+    public Destination(int id) {
+		this.destination_id = id;
+	}
+
+	public int getDestination_id() {
         return destination_id;
     }
 
