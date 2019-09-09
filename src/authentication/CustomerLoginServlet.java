@@ -1,7 +1,6 @@
 package authentication;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import datasource.IdentityMap;
 import datasource.UserMapper;
-import domain.Customer;
 import domain.User;
 
 /**
@@ -37,7 +35,6 @@ public class CustomerLoginServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        PrintWriter pw = response.getWriter();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         UserMapper um = new UserMapper();

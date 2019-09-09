@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS user_has_destination;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS destination;
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS keys;
 
 CREATE TABLE users (
@@ -12,10 +12,10 @@ CREATE TABLE users (
    PRIMARY KEY(user_id)
 );
 
-INSERT INTO users(user_id, username, password, user_type) VALUES (1, 'zhengqingz', '123456', 'customer');
-INSERT INTO users(user_id, username, password, user_type) VALUES (2, 'hez', '456789', 'customer');
-INSERT INTO users(user_id, username, password, user_type) VALUES (3, 'john', '123456', 'courier');
-INSERT INTO users(user_id, username, password, user_type) VALUES (4, 'mark', '456789', 'courier');
+INSERT INTO users(user_id, username, password, user_type) VALUES (1, 'customer1', '123456', 'customer');
+INSERT INTO users(user_id, username, password, user_type) VALUES (2, 'customer2', '456789', 'customer');
+INSERT INTO users(user_id, username, password, user_type) VALUES (3, 'courier1', '123456', 'courier');
+INSERT INTO users(user_id, username, password, user_type) VALUES (4, 'courier2', '456789', 'courier');
 
 CREATE TABLE destination (
     destination_id INT,
@@ -34,25 +34,28 @@ CREATE TABLE user_has_destination (
 );
 
 INSERT INTO user_has_destination(user_id, destination_id) VALUES (1, 1);
-INSERT INTO user_has_destination(user_id, destination_id) VALUES (2, 2);
+INSERT INTO user_has_destination(user_id, destination_id) VALUES (1, 2);
+INSERT INTO user_has_destination(user_id, destination_id) VALUES (2, 1);
 INSERT INTO user_has_destination(user_id, destination_id) VALUES (2, 3);
+
 
 CREATE TABLE orders (
     order_id INT,
     status VARCHAR(50) NOT NULL,
-    item_size INT NOT NULL,
-    item_weight INT NOT NULL,
+    item_size FLOAT NOT NULL,
+    item_weight FLOAT NOT NULL,
     destination_id INT REFERENCES destination(destination_id) ON DELETE CASCADE NOT NULL,
     customer_id INT REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
     courier_id INT REFERENCES users(user_id) ON DELETE CASCADE,
     PRIMARY KEY(order_id)
 );
 
--- CREATE TYPE order_status as ENUM('Confirmed', 'Shipped', 'Delivered');
-INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (1, 'Confirmed', 1, 5, 1, 1);
-INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id, courier_id) VALUES (2, 'Shipped', 9, 15, 2, 1, 3);
-INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (3, 'Confirmed', 2, 7, 3, 2);
-INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id, courier_id) VALUES (4, 'Delivered', 1, 5, 2, 2, 4);
+INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (1, 'Confirmed', 1.6, 5.3, 1, 1);
+INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id, courier_id) VALUES (2, 'Shipped', 9.4, 15.2, 2, 1, 3);
+INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id, courier_id) VALUES (3, 'Delivered', 8.4, 11.3, 2, 1, 4);
+INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (4, 'Confirmed', 2.1, 7.9, 1, 2);
+INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id, courier_id) VALUES (5, 'Delivered', 1.5, 5.4, 3, 2, 4);
+INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id, courier_id) VALUES (6, 'Shipped', 14.5, 6.1, 3, 2, 3);
 
 CREATE TABLE keys (
     table_name VARCHAR(50) NOT NULL,
@@ -62,5 +65,5 @@ CREATE TABLE keys (
 
 INSERT INTO keys(table_name, next_id) VALUES ('users', 5);
 INSERT INTO keys(table_name, next_id) VALUES ('destination', 4);
-INSERT INTO keys(table_name, next_id) VALUES ('user_has_destination', 4);
 INSERT INTO keys(table_name, next_id) VALUES ('orders', 5);
+INSERT INTO keys(table_name, next_id) VALUES ('user_has_destination', 7);

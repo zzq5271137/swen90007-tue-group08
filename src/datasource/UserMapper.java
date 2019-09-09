@@ -10,6 +10,7 @@ import domain.User;
 
 public class UserMapper {
     private static final String findUserWithUsernameAndPassword = "SELECT user_id, user_type FROM users WHERE username = ? and password = ?";
+    private static final String findUserWithUserId = "SELECT user_id FROM users WHERE user_id = ? and user_type = ?";
 
     public List<User> findWithUsernameAndPassword(String username,
             String password, String targetType) {
@@ -39,5 +40,31 @@ public class UserMapper {
             return new Customer(user_id);
         else
             return new Courier(user_id);
+    }
+
+    public User findWithUserId(int user_id, String user_type,
+            boolean findCourierForCustomer) {
+        User result = createUser(user_type, user_id);
+        IdentityMap<User> iMap = IdentityMap.getInstance(result);
+        result = iMap.get(user_id);
+        if (result == null) {
+            PreparedStatement findStatement = null;
+            ResultSet rs = null;
+            try {
+                findStatement = DBConnection.prepare(findUserWithUserId);
+                findStatement.setInt(1, user_id);
+                findStatement.setString(2, user_type);
+                rs = findStatement.executeQuery();
+                if (rs.next()) {
+                    result = createUser(user_type, user_id);
+                    iMap.put(user_id, result);
+                } else if (user_type.equals(User.COURIER_TYPE)
+                        && findCourierForCustomer) {
+                    return null;
+                }
+            } catch (SQLException e) {
+            }
+        }
+        return result;
     }
 }

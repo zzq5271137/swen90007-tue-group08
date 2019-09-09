@@ -1,10 +1,10 @@
 package domain;
 
-import java.util.List;
-
 public class Courier extends User {
-    private String user_type = User.COURIER_TYPE;
-    private List<Order> orders;
+    public Courier() {
+        super();
+        setUser_type(User.COURIER_TYPE);
+    }
 
     public Courier(int user_id) {
         super();

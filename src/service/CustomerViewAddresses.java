@@ -1,8 +1,6 @@
 package service;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,21 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import datasource.IdentityMap;
 import domain.Customer;
+import domain.Destination;
 import domain.Order;
 import domain.User;
 
 /**
- * Servlet implementation class CustomerShowOrderService
+ * Servlet implementation class CustomerViewAddresses
  */
-@WebServlet("/CustomerShowOrderService")
-public class CustomerShowOrderService extends HttpServlet {
+@WebServlet("/CustomerViewAddresses")
+public class CustomerViewAddresses extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerShowOrderService() {
+    public CustomerViewAddresses() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -40,10 +40,11 @@ public class CustomerShowOrderService extends HttpServlet {
         int user_id = Integer.parseInt(request.getParameter("user_id"));
         User user = new Customer();
         user = IdentityMap.getInstance(user).get(user_id);
-        List<Order> orders = user.getOrders();
+        List<Destination> addresses = user.getAllAddresses();
         request.setAttribute("user_id", user_id);
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("CustomerOrderList.jsp")
+        request.setAttribute("addresses", addresses);
+        request.getRequestDispatcher("CustomerAddressList.jsp")
                 .forward(request, response);
     }
+
 }

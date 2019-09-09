@@ -6,6 +6,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Login Success</title>
+<link rel='stylesheet' href='resources/bootstrap.min.css' />
 <style>
 div#root {
 	text-align: center;
@@ -21,8 +22,8 @@ div#root {
 	<div id="root">
 		<h1>Login Success!</h1>
 		<form action="CustomerShowOrderService" method="post">
-			<button type="submit" name="user_id" value="${user_id }">
-				View Your Orders</button>
+			<button type="submit" name="user_id" value="${user_id }"
+				class="btn btn-default">View Your Orders</button>
 		</form>
 	</div>
 </body>

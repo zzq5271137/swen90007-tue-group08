@@ -5,6 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Customer Login</title>
+<link rel='stylesheet' href='resources/bootstrap.min.css' />
 <style>
 div#root {
 	width: 100%;
@@ -35,8 +36,8 @@ input.input {
 			<label> <input type="text" name="username"
 				placeholder="username" class="input">
 			</label> <br> <label> <input type="password" name="password"
-				placeholder="password" class="input">
-			</label> <br> <input type="submit" value="Login" class="submit">
+				placeholder="password" class="input" >
+			</label> <br> <input type="submit" value="Login" class="submit btn btn-default">
 		</form>
 	</div>
 </body>
