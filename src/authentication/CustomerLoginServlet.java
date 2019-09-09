@@ -10,9 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import datasource.IdentityMap;
 import datasource.UserMapper;
+import domain.Customer;
 import domain.User;
 
+/**
+ * Servlet implementation class CustomerLoginServlet
+ */
+@WebServlet("/CustomerLoginServlet")
 public class CustomerLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -35,11 +41,20 @@ public class CustomerLoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         UserMapper um = new UserMapper();
-        List<User> results = um.findWithUsernameAndPassword(username, password, User.CUSTOMER_TYPE);
-        if(results.size() == 0) {
+        List<User> results = um.findWithUsernameAndPassword(username, password,
+                User.CUSTOMER_TYPE);
+        if (results.size() == 0) {
             response.sendRedirect("LoginFailed.html");
         } else {
-            response.sendRedirect("CustomerLoginSuccess.html");
+            int user_id = results.get(0).getUser_id();
+            IdentityMap<User> iMap = IdentityMap.getInstance(results.get(0));
+            if (iMap.get(user_id) == null) {
+                IdentityMap.getInstance(results.get(0)).put(user_id,
+                        results.get(0));
+            }
+            request.setAttribute("user_id", results.get(0).getUser_id());
+            request.getRequestDispatcher("CustomerLoginSuccess.jsp")
+                    .forward(request, response);
         }
     }
 

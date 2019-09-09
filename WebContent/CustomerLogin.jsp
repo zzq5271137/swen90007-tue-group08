@@ -7,23 +7,37 @@
 <title>Customer Login</title>
 <style>
 div#root {
-    width: 100px;
-    height: 300px;
-    line-height: 40px;
+	width: 100%;
+	margin-top: 120px;
 	text-align: center;
+}
+
+input.submit {
+	width: 100px;
+	font-size: 20px;
+}
+
+input {
+	margin-bottom: 7px;
+	border: 1px solid #000;
+}
+
+input.input {
+	width: 200px;
+	height: 27px;
 }
 </style>
 </head>
 <body>
 	<div id="root">
-	   <div>
-			<form action="CustomerLoginServlet" method="post">
-				<label> username: <input type="text" name="username">
-				</label> <br> <label> password: <input type="text"
-					name="password">
-				</label> <br> <input type="submit" value="Login">
-			</form>
-		</div>
+		<h1>Customer Login</h1>
+		<form action="CustomerLoginServlet" method="post">
+			<label> <input type="text" name="username"
+				placeholder="username" class="input">
+			</label> <br> <label> <input type="password" name="password"
+				placeholder="password" class="input">
+			</label> <br> <input type="submit" value="Login" class="submit">
+		</form>
 	</div>
 </body>
 </html>
