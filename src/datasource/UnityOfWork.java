@@ -50,14 +50,14 @@ public class UnityOfWork {
 
     public void commit() {
         OrderMapper oMapper = new OrderMapper();
-//        for (Order order : newOrders) {
-//            oMapper.insert(order);
-//        }
+        for (Order order : newOrders) {
+            oMapper.insert(order);
+        }
         for (Order order : dirtyOrders) {
             oMapper.update(order);
         }
-//        for (Order order : deletedOrders) {
-//            oMapper.delete(order);
-//        }
+        for (Order order : deletedOrders) {
+            oMapper.delete(order);
+        }
     }
 }

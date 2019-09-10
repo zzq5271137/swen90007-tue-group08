@@ -65,5 +65,4 @@ CREATE TABLE keys (
 
 INSERT INTO keys(table_name, next_id) VALUES ('users', 5);
 INSERT INTO keys(table_name, next_id) VALUES ('destination', 4);
-INSERT INTO keys(table_name, next_id) VALUES ('orders', 5);
-INSERT INTO keys(table_name, next_id) VALUES ('user_has_destination', 7);
+INSERT INTO keys(table_name, next_id) VALUES ('orders', 7);

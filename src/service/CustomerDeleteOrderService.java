@@ -8,19 +8,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import datasource.IdentityMap;
+import domain.Customer;
 import domain.Order;
+import domain.User;
 
 /**
- * Servlet implementation class CustomerChangeOrderService
+ * Servlet implementation class CustomerDeleteOrderService
  */
-@WebServlet("/CustomerChangeOrderService")
-public class CustomerChangeOrderService extends HttpServlet {
+@WebServlet("/CustomerDeleteOrderService")
+public class CustomerDeleteOrderService extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerChangeOrderService() {
+    public CustomerDeleteOrderService() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,11 +45,12 @@ public class CustomerChangeOrderService extends HttpServlet {
                     .forward(request, response);
         } else {
             int order_id = Integer.parseInt(request.getParameter("order_id"));
-            Order order = new Order();
-            order = IdentityMap.getInstance(order).get(order_id);
-            request.setAttribute("order", order);
-            request.getRequestDispatcher("CustomerChangeOrderDetail.jsp")
+            User user = new Customer();
+            user = IdentityMap.getInstance(user).get(user_id);
+            user.deleteOrder(order_id);
+            request.getRequestDispatcher("CustomerDeleteOrderSuccess.jsp")
                     .forward(request, response);
         }
     }
+
 }

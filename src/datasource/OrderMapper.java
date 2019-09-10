@@ -17,6 +17,8 @@ public class OrderMapper {
     private static final String findAllOrdersForCustomerLazy = "SELECT order_id FROM orders WHERE customer_id = ?";
     private static final String findOrderFromOrderId = "SELECT status, item_size, item_weight, destination_id, customer_id, courier_id FROM orders WHERE order_id = ?";
     private static final String updateOrder = "UPDATE orders SET item_size = ?, item_weight = ?, destination_id = ? WHERE order_id = ?";
+    private static final String insertNewOrder = "INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String deleteOrder = "DELETE FROM orders WHERE order_id = ?";
 
     /**
      * Retrieve order object from Identity Map according to order_id. If the
@@ -122,8 +124,30 @@ public class OrderMapper {
         }
     }
 
-    // Identity Field -- key tables
     public void insert(Order order) {
-        int order_id = KeyTable.getKey("orders"); // automatically generated primary key
+        PreparedStatement insertStatement = null;
+        try {
+            insertStatement = DBConnection.prepare(insertNewOrder);
+            insertStatement.setInt(1, order.getOrder_id());
+            insertStatement.setString(2, order.getStatus());
+            insertStatement.setFloat(3, order.getItem_size());
+            insertStatement.setFloat(4, order.getItem_weight());
+            insertStatement.setInt(5,
+                    order.getDestination().getDestination_id());
+            insertStatement.setInt(6, order.getCustomer().getUser_id());
+            insertStatement.execute();
+        } catch (SQLException e) {
+
+        }
+    }
+
+    public void delete(Order order) {
+        PreparedStatement deleteStatement = null;
+        try {
+            deleteStatement = DBConnection.prepare(deleteOrder);
+            deleteStatement.setInt(1, order.getOrder_id());
+            deleteStatement.execute();
+        } catch (SQLException e) {
+        }
     }
 }

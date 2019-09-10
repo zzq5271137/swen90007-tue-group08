@@ -59,4 +59,11 @@ public abstract class User {
     public void ChangeOrderDetail(int order_id, float item_size,
             float item_weight, String address) {
     }
+
+    public void CreateNewOrder(float item_size, float item_weight,
+            String address) {
+    }
+    
+    public void deleteOrder(int order_id) {
+    }
 }

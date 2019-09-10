@@ -41,13 +41,16 @@
 					<td>${order.status }</td>
 					<td colspan="2" align="center">
 						<form action="CustomerChangeOrderService" method="post">
-						    <input type="hidden" name="user_id" value="${user_id }">
+							<input type="hidden" name="user_id" value="${user_id }">
+							<input type="hidden" name="status" value="${order.status }">
 							<button type="submit" name="order_id" value="${order.order_id }"
 								class="btn btn-default">Change Detail</button>
 						</form>
 					</td>
 					<td colspan="2" align="center">
-						<form action="#" method="post">
+						<form action="CustomerDeleteOrderService" method="post">
+							<input type="hidden" name="user_id" value="${user_id }">
+							<input type="hidden" name="status" value="${order.status }">
 							<button type="submit" name="order_id" value="${order.order_id }"
 								class="btn btn-default">Delete</button>
 						</form>
@@ -63,7 +66,7 @@
 			</form>
 		</div>
 		<div id='add'>
-			<form action="#" method="post">
+			<form action="CustomerCreateNewOrderService" method="post">
 				<button type="submit" name="user_id" value="${user_id }"
 					class="btn btn-default">Add New Order</button>
 			</form>

@@ -4,6 +4,10 @@ import java.sql.SQLException;
 import datasource.OrderMapper;
 
 public class Order {
+    public static final String CONFIRMED_STATUS = "Confirmed";
+    public static final String SHIPPED_STATUS = "Shipped";
+    public static final String DELIVERED_STATUS = "Delivered";
+    
     private int order_id;
     private String status;
     private float item_size = -1;

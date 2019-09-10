@@ -23,4 +23,8 @@ public class IdentityMap<E> {
     public E get(int id) {
         return map.get(id);
     }
+
+    public void remove(int id) {
+        map.remove(id);
+    }
 }
