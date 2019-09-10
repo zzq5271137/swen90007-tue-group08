@@ -1,8 +1,6 @@
 package service;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,22 +8,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import datasource.IdentityMap;
-import domain.Customer;
 import domain.Order;
-import domain.User;
 
 /**
- * Servlet implementation class CustomerShowOrderService
+ * Servlet implementation class CustomerChangeOrderService
  */
-@WebServlet("/CustomerShowOrderService")
-public class CustomerShowOrderService extends HttpServlet {
+@WebServlet("/CustomerChangeOrderService")
+public class CustomerChangeOrderService extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerShowOrderService() {
+    public CustomerChangeOrderService() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -35,13 +32,13 @@ public class CustomerShowOrderService extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
+        int order_id = Integer.parseInt(request.getParameter("order_id"));
+        Order order = new Order();
+        order = IdentityMap.getInstance(order).get(order_id);
         int user_id = Integer.parseInt(request.getParameter("user_id"));
-        User user = new Customer();
-        user = IdentityMap.getInstance(user).get(user_id);
-        List<Order> orders = user.getAllOrders();
         request.setAttribute("user_id", user_id);
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("CustomerOrderList.jsp")
+        request.setAttribute("order", order);
+        request.getRequestDispatcher("CustomerChangeOrderDetail.jsp")
                 .forward(request, response);
     }
 }

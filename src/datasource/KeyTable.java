@@ -3,6 +3,10 @@ package datasource;
 import java.sql.*;
 
 public class KeyTable {
+    public static final String USER_TABLE = "users";
+    public static final String DESTINATION_TABLE = "destination";
+    public static final String ORDER_TABLE = "orders";
+    
     private static final String findNextIdWithTableName = "SELECT next_id FROM keys WHERE table_name = ? FOR UPDATE";
     private static final String updateNextIdWithTableName = "UPDATE keys SET next_id = ? WHERE table_name = ?";
 

@@ -14,18 +14,9 @@ import domain.User;
 
 public class OrderMapper {
 
-    // ===========================
-    private static final String findOrderFromCustomerId = "SELECT order_id, status, item_size, item_weight, destination_id, "
-            + "customer_id, courier_id FROM orders WHERE customer_id = ?";
-    private static final String findOrderFromCourierId = "SELECT order_id, status, item_size, item_weight, destination_id, "
-            + "customer_id, courier_id FROM orders WHERE courier_id = ?";
-    private static final String findOrderWithStatus = "SELECT order_id, status, item_size, item_weight, destination_id, "
-            + "customer_id, courier_id FROM orders WHERE status = ?";
-    // ===================================
-
-    private static final String FindAllOrdersForCustomerLazy = "SELECT order_id FROM orders WHERE customer_id = ?";
-
+    private static final String findAllOrdersForCustomerLazy = "SELECT order_id FROM orders WHERE customer_id = ?";
     private static final String findOrderFromOrderId = "SELECT status, item_size, item_weight, destination_id, customer_id, courier_id FROM orders WHERE order_id = ?";
+    private static final String updateOrder = "UPDATE orders SET item_size = ?, item_weight = ?, destination_id = ? WHERE order_id = ?";
 
     /**
      * Retrieve order object from Identity Map according to order_id. If the
@@ -92,7 +83,7 @@ public class OrderMapper {
         ResultSet rs = null;
         List<Order> orders = new ArrayList<>();
         try {
-            findStatement = DBConnection.prepare(FindAllOrdersForCustomerLazy);
+            findStatement = DBConnection.prepare(findAllOrdersForCustomerLazy);
             findStatement.setInt(1, customer_id);
             rs = findStatement.executeQuery();
             while (rs.next()) {
@@ -117,34 +108,18 @@ public class OrderMapper {
         return checkIdentityMap(order_id, false);
     }
 
-    /*
-     * Methods below are not used for now.
-     */
-
-    // used for couriers looking for their order
-    public ResultSet findOrderFromCourierId(int courier_id) {
-        PreparedStatement findStatement = null;
-        ResultSet rs = null;
+    public void update(Order order) {
+        PreparedStatement updateStatement = null;
         try {
-            findStatement = DBConnection.prepare(findOrderFromCourierId);
-            findStatement.setInt(1, courier_id);
-            rs = findStatement.executeQuery();
+            updateStatement = DBConnection.prepare(updateOrder);
+            updateStatement.setFloat(1, order.getItem_size());
+            updateStatement.setFloat(2, order.getItem_weight());
+            updateStatement.setInt(3,
+                    order.getDestination().getDestination_id());
+            updateStatement.setInt(4, order.getOrder_id());
+            updateStatement.execute();
         } catch (SQLException e) {
         }
-        return rs;
-    }
-
-    // used for couriers looking for orders with a specific status
-    public ResultSet findOrderWithStatus(String status) {
-        PreparedStatement findStatement = null;
-        ResultSet rs = null;
-        try {
-            findStatement = DBConnection.prepare(findOrderWithStatus);
-            findStatement.setString(1, status);
-            rs = findStatement.executeQuery();
-        } catch (SQLException e) {
-        }
-        return rs;
     }
 
     // Identity Field -- key tables

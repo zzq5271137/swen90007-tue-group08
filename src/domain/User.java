@@ -44,16 +44,19 @@ public abstract class User {
         this.user_type = user_type;
     }
 
-    public List<Order> getOrders() {
+    public List<Order> getAllOrders() {
         return orders;
     }
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
-    
+
     public List<Destination> getAllAddresses() {
         return null;
     }
 
+    public void ChangeOrderDetail(int order_id, float item_size,
+            float item_weight, String address) {
+    }
 }

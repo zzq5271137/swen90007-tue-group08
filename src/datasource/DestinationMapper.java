@@ -11,6 +11,8 @@ import domain.Destination;
 public class DestinationMapper {
     private static final String findDestinationFromDestinationId = "SELECT address FROM destination WHERE destination_id = ?";
     private static final String findAllAddressForCustomer = "SELECT destination_id FROM user_has_destination WHERE user_id = ?";
+    private static final String insertIntoAddress = "INSERT INTO destination(destination_id, address) VALUES(?, ?)";
+    private static final String insertIntoAssociationTable = "INSERT INTO user_has_destination(user_id, destination_id) VALUES (?, ?)";
 
     public Destination findDestinationFromDestinationId(int destination_id) {
         PreparedStatement findStatement = null;
@@ -44,5 +46,24 @@ public class DestinationMapper {
         } catch (SQLException e) {
         }
         return results;
+    }
+
+    public void insert(int user_id, Destination destination) {
+        PreparedStatement insertAddressStatement = null;
+        PreparedStatement insertAssociationStatement = null;
+        try {
+            insertAddressStatement = DBConnection.prepare(insertIntoAddress);
+            insertAddressStatement.setInt(1, destination.getDestination_id());
+            insertAddressStatement.setString(2, destination.getAddress());
+            insertAddressStatement.execute();
+
+            insertAssociationStatement = DBConnection
+                    .prepare(insertIntoAssociationTable);
+            insertAssociationStatement.setInt(1, user_id);
+            insertAssociationStatement.setInt(2,
+                    destination.getDestination_id());
+            insertAssociationStatement.execute();
+        } catch (SQLException e) {
+        }
     }
 }

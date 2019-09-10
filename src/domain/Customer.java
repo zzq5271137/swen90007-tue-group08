@@ -1,9 +1,13 @@
 package domain;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import datasource.DestinationMapper;
+import datasource.IdentityMap;
+import datasource.KeyTable;
 import datasource.OrderMapper;
+import datasource.UnityOfWork;
 
 public class Customer extends User {
 
@@ -18,13 +22,10 @@ public class Customer extends User {
     }
 
     @Override
-    public List<Order> getOrders() {
-        List<Order> orders = super.getOrders();
-        if (orders == null) {
-            OrderMapper mapper = new OrderMapper();
-            orders = mapper.findAllOrdersForCustomer(getUser_id());
-            setOrders(orders);
-        }
+    public List<Order> getAllOrders() {
+        OrderMapper mapper = new OrderMapper();
+        orders = mapper.findAllOrdersForCustomer(getUser_id());
+        setOrders(orders);
         return orders;
     }
 
@@ -34,5 +35,26 @@ public class Customer extends User {
         List<Destination> destinations = dMapper
                 .findAllAddressForCustomer(getUser_id());
         return destinations;
+    }
+
+    public void ChangeOrderDetail(int order_id, float item_size,
+            float item_weight, String address) {
+        Order order = new Order();
+        IdentityMap<Order> iMap = IdentityMap.getInstance(order);
+        order = iMap.get(order_id);
+        
+        Destination destination = new Destination(
+                KeyTable.getKey(KeyTable.DESTINATION_TABLE));
+        destination.setAddress(address);
+        order.setDestination(destination);
+        DestinationMapper dMapper = new DestinationMapper();
+        dMapper.insert(getUser_id(), destination);
+        
+        order.setItem_size(item_size);
+        order.setItem_weight(item_weight);
+        iMap.put(order_id, order);
+        UnityOfWork.newCurrent();
+        UnityOfWork.getCurrent().registerDirty(order);
+        UnityOfWork.getCurrent().commit();
     }
 }

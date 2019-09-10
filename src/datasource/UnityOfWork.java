@@ -10,7 +10,7 @@ public class UnityOfWork {
 
     private List<Order> newOrders = new ArrayList<>();
     private List<Order> dirtyOrders = new ArrayList<>();
-    private List<Order> deletedObjects = new ArrayList<>();
+    private List<Order> deletedOrders = new ArrayList<>();
 
     public static void newCurrent() {
         setCurrent(new UnityOfWork());
@@ -28,13 +28,13 @@ public class UnityOfWork {
         assert order.getOrder_id() != 0 : "Order id is null.";
         assert !newOrders.contains(order) : "The order is new.";
         assert !dirtyOrders.contains(order) : "The order is dirty.";
-        assert !deletedObjects.contains(order) : "The order is deleted.";
+        assert !deletedOrders.contains(order) : "The order is deleted.";
         newOrders.add(order);
     }
 
     public void registerDirty(Order order) {
         assert order.getOrder_id() != 0 : "Order id is null.";
-        assert !deletedObjects.contains(order) : "The order is deleted.";
+        assert !deletedOrders.contains(order) : "The order is deleted.";
         if (!dirtyOrders.contains(order) && !newOrders.contains(order))
             dirtyOrders.add(order);
     }
@@ -44,11 +44,20 @@ public class UnityOfWork {
         if (newOrders.remove(order))
             return;
         dirtyOrders.remove(order);
-        if (!deletedObjects.contains(order))
-            deletedObjects.add(order);
+        if (!deletedOrders.contains(order))
+            deletedOrders.add(order);
     }
 
     public void commit() {
-        
+        OrderMapper oMapper = new OrderMapper();
+//        for (Order order : newOrders) {
+//            oMapper.insert(order);
+//        }
+        for (Order order : dirtyOrders) {
+            oMapper.update(order);
+        }
+//        for (Order order : deletedOrders) {
+//            oMapper.delete(order);
+//        }
     }
 }

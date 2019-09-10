@@ -33,25 +33,27 @@
 				<h3>You have no orders!</h3>
 			</c:if>
 			<c:forEach items="${orders }" var="order">
-				<form action="#" method="post">
-					<tr>
-						<td>${order.order_id }</td>
-						<td>${order.item_size }</td>
-						<td>${order.item_weight }</td>
-						<td>${order.destination.address }</td>
-						<td>${order.status }</td>
-						<td colspan="2" align="center">
+				<tr>
+					<td>${order.order_id }</td>
+					<td>${order.item_size }</td>
+					<td>${order.item_weight }</td>
+					<td>${order.destination.address }</td>
+					<td>${order.status }</td>
+					<td colspan="2" align="center">
+						<form action="CustomerChangeOrderService" method="post">
+						    <input type="hidden" name="user_id" value="${user_id }">
 							<button type="submit" name="order_id" value="${order.order_id }"
 								class="btn btn-default">Change Detail</button>
-						</td>
-						<td colspan="2" align="center">
-							<form action="#" method="post">
-								<button type="submit" name="order_id" value="${order.order_id }"
-									class="btn btn-default">Delete</button>
-							</form>
-						</td>
-					</tr>
-				</form>
+						</form>
+					</td>
+					<td colspan="2" align="center">
+						<form action="#" method="post">
+							<button type="submit" name="order_id" value="${order.order_id }"
+								class="btn btn-default">Delete</button>
+						</form>
+					</td>
+				</tr>
+
 			</c:forEach>
 		</table>
 		<div id='address'>
