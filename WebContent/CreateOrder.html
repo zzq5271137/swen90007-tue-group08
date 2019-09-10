@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Create an order</title>
+</head>
+<body>
+    <form action="CreateNewOrderServlet" method="post">
+        Destination: <select>
+                         <option value ="Melbourne">Melbourne</option>
+                         <option value ="Sydney">Sydney</option>
+                         <option value="Geelong">Geelong</option>
+                     </select><br>
+        Parcel Size: <input type="number" name="item_size"><br>
+        Parcel Weight: <input type="number" name="item_weight"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
