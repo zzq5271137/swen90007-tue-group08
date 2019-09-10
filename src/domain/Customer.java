@@ -76,6 +76,9 @@ public class Customer extends User {
         dMapper.insert(getUser_id(), destination);
         IdentityMap<Order> iMap = IdentityMap.getInstance(order);
         iMap.put(order_id, order);
+        List<Order> orders = getAllOrders();
+        orders.add(order);
+        setOrders(orders);
         UnityOfWork.newCurrent();
         UnityOfWork.getCurrent().registerNew(order);
         UnityOfWork.getCurrent().commit();
@@ -83,10 +86,12 @@ public class Customer extends User {
 
     @Override
     public void deleteOrder(int order_id) {
-        getAllOrders().remove(order_id);
         Order order = new Order();
         IdentityMap<Order> iMap = IdentityMap.getInstance(order);
         order = iMap.get(order_id);
+        List<Order> orders = getAllOrders();
+        orders.remove(order);
+        setOrders(orders);
         iMap.remove(order_id);
         UnityOfWork.newCurrent();
         UnityOfWork.getCurrent().registerDeleted(order);
