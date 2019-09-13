@@ -7,11 +7,10 @@ public class Order {
     public static final String CONFIRMED_STATUS = "Confirmed";
     public static final String SHIPPED_STATUS = "Shipped";
     public static final String DELIVERED_STATUS = "Delivered";
-    
+
     private int order_id;
     private String status;
-    private float item_size = -1;
-    private float item_weight = -1;
+    private Item item = null; // embedded value pattern
     private Destination destination;
     private Customer customer; // Foreign Key Mapping
     private Courier courier; // Foreign Key Mapping
@@ -23,13 +22,11 @@ public class Order {
         this.order_id = order_id;
     }
 
-    public Order(int order_id, String status, float item_size,
-            float item_weight, Destination destination, Customer customer,
-            Courier courier) {
+    public Order(int order_id, String status, Item item,
+            Destination destination, Customer customer, Courier courier) {
         setOrder_id(order_id);
         setStatus(status);
-        setItem_size(item_size);
-        setItem_weight(item_weight);
+        setItem(item);
         setDestination(destination);
         setCustomer(customer);
         setCourier(courier);
@@ -54,26 +51,15 @@ public class Order {
         this.status = status;
     }
 
-    public float getItem_size() throws SQLException {
-        if (item_size == -1) {
+    public Item getItem() throws SQLException {
+        if (item == null) {
             load();
         }
-        return item_size;
+        return item;
     }
 
-    public void setItem_size(float item_size) {
-        this.item_size = item_size;
-    }
-
-    public float getItem_weight() throws SQLException {
-        if (item_weight == -1) {
-            load();
-        }
-        return item_weight;
-    }
-
-    public void setItem_weight(float item_weight) {
-        this.item_weight = item_weight;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public Destination getDestination() throws SQLException {
@@ -116,11 +102,8 @@ public class Order {
         if (status == null) {
             setStatus(order.getStatus());
         }
-        if (item_size == -1) {
-            setItem_size(order.getItem_size());
-        }
-        if (item_weight == -1) {
-            setItem_weight(order.getItem_weight());
+        if (item == null) {
+            setItem(order.getItem());
         }
         if (destination == null) {
             setDestination(order.getDestination());

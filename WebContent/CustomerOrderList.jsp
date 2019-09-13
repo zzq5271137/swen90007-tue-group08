@@ -35,8 +35,8 @@
 			<c:forEach items="${orders }" var="order">
 				<tr>
 					<td>${order.order_id }</td>
-					<td>${order.item_size }</td>
-					<td>${order.item_weight }</td>
+					<td>${order.item.item_size }</td>
+					<td>${order.item.item_weight }</td>
 					<td>${order.destination.address }</td>
 					<td>${order.status }</td>
 					<td colspan="2" align="center">

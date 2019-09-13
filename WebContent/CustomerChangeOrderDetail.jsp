@@ -38,12 +38,12 @@ input.input {
         <form action="CustomerConfirmOrderChangeService" method="post">
             <label> 
                 Item size:
-                <input type="text" name="item_size" value="${order.item_size }" class="input">
+                <input type="text" name="item_size" value="${order.item.item_size }" class="input">
             </label> 
             <br> 
             <label>
                 Item weight: 
-                <input type="text" name="item_weight" value="${order.item_weight }" class="input" >
+                <input type="text" name="item_weight" value="${order.item.item_weight }" class="input" >
             </label> 
             <br>
             <label>

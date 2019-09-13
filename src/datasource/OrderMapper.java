@@ -9,6 +9,7 @@ import java.util.List;
 import domain.Courier;
 import domain.Customer;
 import domain.Destination;
+import domain.Item;
 import domain.Order;
 import domain.User;
 
@@ -47,8 +48,11 @@ public class OrderMapper {
                     rs = findStatement.executeQuery();
                     rs.next();
                     String status = rs.getString(1);
+
                     float item_size = rs.getFloat(2);
                     float item_weight = rs.getFloat(3);
+                    Item item = new Item(item_size, item_weight);
+
                     int destination_id = rs.getInt(4);
                     int customer_id = rs.getInt(5);
                     int courier_id = rs.getInt(6);
@@ -62,9 +66,8 @@ public class OrderMapper {
                     DestinationMapper dMapper = new DestinationMapper();
                     Destination destination = dMapper
                             .findDestinationFromDestinationId(destination_id);
-                    order = new Order(order_id, status, item_size, item_weight,
-                            destination, (Customer) customer,
-                            (Courier) courier);
+                    order = new Order(order_id, status, item, destination,
+                            (Customer) customer, (Courier) courier);
                     iMap.put(order_id, order);
                 } catch (SQLException e) {
                 }
@@ -114,8 +117,8 @@ public class OrderMapper {
         PreparedStatement updateStatement = null;
         try {
             updateStatement = DBConnection.prepare(updateOrder);
-            updateStatement.setFloat(1, order.getItem_size());
-            updateStatement.setFloat(2, order.getItem_weight());
+            updateStatement.setFloat(1, order.getItem().getItem_size());
+            updateStatement.setFloat(2, order.getItem().getItem_weight());
             updateStatement.setInt(3,
                     order.getDestination().getDestination_id());
             updateStatement.setInt(4, order.getOrder_id());
@@ -130,8 +133,8 @@ public class OrderMapper {
             insertStatement = DBConnection.prepare(insertNewOrder);
             insertStatement.setInt(1, order.getOrder_id());
             insertStatement.setString(2, order.getStatus());
-            insertStatement.setFloat(3, order.getItem_size());
-            insertStatement.setFloat(4, order.getItem_weight());
+            insertStatement.setFloat(3, order.getItem().getItem_size());
+            insertStatement.setFloat(4, order.getItem().getItem_weight());
             insertStatement.setInt(5,
                     order.getDestination().getDestination_id());
             insertStatement.setInt(6, order.getCustomer().getUser_id());

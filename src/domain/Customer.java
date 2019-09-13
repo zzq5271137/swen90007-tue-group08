@@ -50,8 +50,8 @@ public class Customer extends User {
         DestinationMapper dMapper = new DestinationMapper();
         dMapper.insert(getUser_id(), destination);
 
-        order.setItem_size(item_size);
-        order.setItem_weight(item_weight);
+        Item item = new Item(item_size, item_weight);
+        order.setItem(item);
         iMap.put(order_id, order);
         UnityOfWork.newCurrent();
         UnityOfWork.getCurrent().registerDirty(order);
@@ -65,8 +65,8 @@ public class Customer extends User {
         int order_id = KeyTable.getKey(KeyTable.ORDER_TABLE);
         order.setOrder_id(order_id);
         order.setStatus(Order.CONFIRMED_STATUS);
-        order.setItem_size(item_size);
-        order.setItem_weight(item_weight);
+        Item item = new Item(item_size, item_weight);
+        order.setItem(item);
         Destination destination = new Destination(
                 KeyTable.getKey(KeyTable.DESTINATION_TABLE));
         destination.setAddress(address);
