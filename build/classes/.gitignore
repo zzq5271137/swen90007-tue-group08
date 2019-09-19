@@ -1,2 +1,7 @@
 /datasource/
+<<<<<<< HEAD
+=======
+/domain/
+/CreateNewOrderServlet.class
+>>>>>>> f900d601036224e9cd1e1724a12ccccc51e4163f
 /authentication/

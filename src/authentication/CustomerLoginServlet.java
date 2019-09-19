@@ -54,5 +54,4 @@ public class CustomerLoginServlet extends HttpServlet {
                     .forward(request, response);
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package datasource;
 
+<<<<<<< HEAD
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,4 +67,12 @@ public class DestinationMapper {
         } catch (SQLException e) {
         }
     }
+=======
+import domain.Destination;
+
+public class DestinationMapper {
+	public IdentityMap<Destination> map = new IdentityMap<Destination>();
+	
+	private static final String findOrderFromOrderId = "";
+>>>>>>> f900d601036224e9cd1e1724a12ccccc51e4163f
 }
