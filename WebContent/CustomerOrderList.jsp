@@ -9,6 +9,15 @@
 <link rel='stylesheet' href='resources/bootstrap.min.css' />
 <link rel='stylesheet' href='style.css' />
 <style>
+h1{
+	display: inline-block;
+}
+#logout{
+	display: inline-block;
+	float: right;
+	margin-top:20px;
+	margin-bottom:10px
+}
 #address {
 	float: left
 }
@@ -21,6 +30,9 @@
 <body>
 	<div class='container'>
 		<h1>Orders</h1>
+		<a id='logout' href="CustomerLogin.jsp" class="btn btn-info btn-lg">
+          Log out
+        </a>
 		<table class='table table-bordered table-striped'>
 			<tr>
 				<th>Order Id</th>
