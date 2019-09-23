@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import datasource.IdentityMap;
 import datasource.UserMapper;
@@ -39,16 +40,18 @@ public class CustomerLoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         int user_id = -1;
+        boolean hasCookies = false;
         UserMapper um = new UserMapper();
         
         // if no username is typed, finding user from cookie
         if(username == "") {
         	Cookie[] cookies = request.getCookies();
-        	System.out.println("cookies length: "+cookies.length);
+        	// System.out.println("cookies length: "+cookies.length);
         	for(Cookie cook:cookies) {
         		String cookName = cook.getName();
         		if(cookName.equals("name")) {
         			username = cook.getValue();
+        			hasCookies = true;
         		}
         		if(cookName.equals("password")) {
         			password = cook.getValue();
@@ -68,15 +71,29 @@ public class CustomerLoginServlet extends HttpServlet {
                 IdentityMap.getInstance(results.get(0)).put(user_id,
                         results.get(0));
             }
-            Cookie cookie = new Cookie("name", username);
-            Cookie cookiePass = new Cookie("password", password);
-            cookie.setMaxAge(60*8);
-            cookiePass.setMaxAge(60*8);
-            response.addCookie(cookie);
-            response.addCookie(cookiePass);
-            request.setAttribute("user_id", results.get(0).getUser_id());
-            request.getRequestDispatcher("CustomerLoginSuccess.jsp")
-                    .forward(request, response);
+            
+            if(!hasCookies) {
+            	HttpSession session = request.getSession();
+            	session.setAttribute("username", username);
+            	session.setAttribute("password", password);
+            	session.setAttribute("user_id", user_id);
+            	
+	            Cookie cookie = new Cookie("name", username);
+	            Cookie cookiePass = new Cookie("password", password);
+	            Cookie cookieID = new Cookie("user_id", String.valueOf(user_id));
+	            
+	            cookie.setMaxAge(60*8);
+	            cookiePass.setMaxAge(60*8);
+	            cookieID.setMaxAge(60*8);
+	            response.addCookie(cookie);
+	            response.addCookie(cookiePass);
+	            response.addCookie(cookieID);
+            }
+            
+            // request.setAttribute("user_id", results.get(0).getUser_id());
+            //request.getRequestDispatcher("CustomerLoginSuccess.jsp")
+             //       .forward(request, response);
+            response.sendRedirect(request.getContextPath()+"/CustomerLoginSuccess.jsp");
         }
     }
 }

@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class CustomerCreateNewOrderService
@@ -30,9 +31,13 @@ public class CustomerCreateNewOrderService extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         int user_id = Integer.parseInt(request.getParameter("user_id"));
-        request.setAttribute("user_id", user_id);
-        request.getRequestDispatcher("CustomerNewOrderForm.jsp")
-                .forward(request, response);
+        // check session
+    	HttpSession session = request.getSession();
+    	session.setAttribute("user_id", user_id);
+        // request.setAttribute("user_id", user_id);
+        // request.getRequestDispatcher("CustomerNewOrderForm.jsp")
+        //        .forward(request, response);
+    	response.sendRedirect(request.getContextPath()+"/CustomerNewOrderForm.jsp");
     }
 
 }

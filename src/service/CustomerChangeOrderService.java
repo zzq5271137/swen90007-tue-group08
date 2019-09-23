@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import datasource.IdentityMap;
 import domain.Order;
@@ -45,9 +46,16 @@ public class CustomerChangeOrderService extends HttpServlet {
             int order_id = Integer.parseInt(request.getParameter("order_id"));
             Order order = new Order();
             order = IdentityMap.getInstance(order).get(order_id);
-            request.setAttribute("order", order);
-            request.getRequestDispatcher("CustomerChangeOrderDetail.jsp")
-                    .forward(request, response);
+            // request.setAttribute("order", order);
+            // request.getRequestDispatcher("CustomerChangeOrderDetail.jsp")
+            //        .forward(request, response);
+            
+            // check session
+        	HttpSession session = request.getSession();
+        	session.setAttribute("user_id", user_id);
+        	session.setAttribute("order", order);
+            
+            response.sendRedirect(request.getContextPath()+"/CustomerChangeOrderDetail.jsp");
         }
     }
 }
