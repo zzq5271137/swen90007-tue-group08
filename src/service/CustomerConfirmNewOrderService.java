@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import datasource.IdentityMap;
 import domain.Customer;
@@ -40,9 +41,14 @@ public class CustomerConfirmNewOrderService extends HttpServlet {
         User user = new Customer();
         user = IdentityMap.getInstance(user).get(user_id);
         user.CreateNewOrder(item_size, item_weight, address);
-        request.setAttribute("user_id", user_id);
-        request.getRequestDispatcher("CustomerNewOrderSuccess.jsp")
-                .forward(request, response);
+//        request.setAttribute("user_id", user_id);
+//        request.getRequestDispatcher("CustomerNewOrderSuccess.jsp")
+//                .forward(request, response);
+        
+        // check session
+    	HttpSession session = request.getSession();
+    	session.setAttribute("user_id", user_id);
+        
+        response.sendRedirect(request.getContextPath()+"/CustomerNewOrderSuccess.jsp");
     }
-
 }
