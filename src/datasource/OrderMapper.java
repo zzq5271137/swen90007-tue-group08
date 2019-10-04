@@ -16,11 +16,12 @@ import domain.User;
 public class OrderMapper {
 
     private static final String findAllOrdersForCustomerLazy = "SELECT order_id FROM orders WHERE customer_id = ?";
+    private static final String findAllOrdersForCourierLazy = "SELECT order_id FROM orders WHERE courier_id = ?";
     private static final String findOrderFromOrderId = "SELECT status, item_size, item_weight, destination_id, customer_id, courier_id FROM orders WHERE order_id = ?";
     private static final String updateOrder = "UPDATE orders SET item_size = ?, item_weight = ?, destination_id = ? WHERE order_id = ?";
     private static final String insertNewOrder = "INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String deleteOrder = "DELETE FROM orders WHERE order_id = ?";
-
+    private static final String findConfirmedOrders = "SELECT order_id FROM orders WHERE status = Confirmed";
     /**
      * Retrieve order object from Identity Map according to order_id. If the
      * corresponding order is not registered in the Identity Map, fetch the data
@@ -100,6 +101,24 @@ public class OrderMapper {
         }
         return orders;
     }
+    
+   public List<Order> findAllOrdersForCourier(int courier_id) {
+       PreparedStatement findStatement = null;
+       ResultSet rs = null;
+       List<Order> orders = new ArrayList<>();
+       try {
+           findStatement = DBConnection.prepare(findAllOrdersForCourierLazy);
+           findStatement.setInt(1, courier_id);
+           rs = findStatement.executeQuery();
+           while (rs.next()) {
+               int order_id = rs.getInt(1);
+               Order order = checkIdentityMap(order_id, true);
+               orders.add(order);
+           }
+       } catch (SQLException e) {
+       }
+       return orders;
+   }
 
     /**
      * Retrieve all data of one order. Lazy mode off.
@@ -113,6 +132,24 @@ public class OrderMapper {
         return checkIdentityMap(order_id, false);
     }
 
+    // return all confirmed 
+    public List<Order> findConfirmedOrders(){
+    	PreparedStatement findStatement = null;
+    	ResultSet rs = null;
+    	List<Order> orders = new ArrayList<>();
+    	try {
+    		findStatement = DBConnection.prepare(findConfirmedOrders);
+    		rs = findStatement.executeQuery();
+    		while (rs.next()) {
+                int order_id = rs.getInt(1);
+                Order order = checkIdentityMap(order_id, true);
+                orders.add(order);
+            }
+    	}catch(SQLException e) {
+    	}
+    	return orders;
+    }
+   
     public void update(Order order) {
         PreparedStatement updateStatement = null;
         try {
