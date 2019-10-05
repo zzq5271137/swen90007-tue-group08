@@ -38,22 +38,23 @@ public class CustomerViewAddresses extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-    	
-    	int user_id = Integer.parseInt(request.getParameter("user_id"));
+
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
         User user = new Customer();
         user = IdentityMap.getInstance(user).get(user_id);
-        List<Destination> addresses = user.getAllAddresses();
+        List<Destination> addresses = ((Customer) user).getDestinations();
         request.setAttribute("user_id", user_id);
         request.setAttribute("addresses", addresses);
         // request.getRequestDispatcher("CustomerAddressList.jsp")
-        //        .forward(request, response);
-        
+        // .forward(request, response);
+
         // check session
-    	HttpSession session = request.getSession();
-    	session.setAttribute("user_id", user_id);
-    	session.setAttribute("addresses", addresses);
-        
-        response.sendRedirect(request.getContextPath()+"/CustomerAddressList.jsp");
+        HttpSession session = request.getSession();
+        session.setAttribute("user_id", user_id);
+        session.setAttribute("addresses", addresses);
+
+        response.sendRedirect(
+                request.getContextPath() + "/CustomerAddressList.jsp");
     }
 
 }

@@ -35,20 +35,22 @@ public class CustomerConfirmNewOrderService extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         float item_size = Float.parseFloat(request.getParameter("item_size"));
-        float item_weight = Float.parseFloat(request.getParameter("item_weight"));
+        float item_weight = Float
+                .parseFloat(request.getParameter("item_weight"));
         String address = request.getParameter("address");
         int user_id = Integer.parseInt(request.getParameter("user_id"));
         User user = new Customer();
         user = IdentityMap.getInstance(user).get(user_id);
-        user.CreateNewOrder(item_size, item_weight, address);
-//        request.setAttribute("user_id", user_id);
-//        request.getRequestDispatcher("CustomerNewOrderSuccess.jsp")
-//                .forward(request, response);
-        
+        ((Customer)user).CreateNewOrder(item_size, item_weight, address);
+        // request.setAttribute("user_id", user_id);
+        // request.getRequestDispatcher("CustomerNewOrderSuccess.jsp")
+        // .forward(request, response);
+
         // check session
-    	HttpSession session = request.getSession();
-    	session.setAttribute("user_id", user_id);
-        
-        response.sendRedirect(request.getContextPath()+"/CustomerNewOrderSuccess.jsp");
+        HttpSession session = request.getSession();
+        session.setAttribute("user_id", user_id);
+
+        response.sendRedirect(
+                request.getContextPath() + "/CustomerNewOrderSuccess.jsp");
     }
 }

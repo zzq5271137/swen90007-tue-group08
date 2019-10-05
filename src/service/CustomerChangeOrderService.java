@@ -48,14 +48,15 @@ public class CustomerChangeOrderService extends HttpServlet {
             order = IdentityMap.getInstance(order).get(order_id);
             // request.setAttribute("order", order);
             // request.getRequestDispatcher("CustomerChangeOrderDetail.jsp")
-            //        .forward(request, response);
-            
+            // .forward(request, response);
+
             // check session
-        	HttpSession session = request.getSession();
-        	session.setAttribute("user_id", user_id);
-        	session.setAttribute("order", order);
-            
-            response.sendRedirect(request.getContextPath()+"/CustomerChangeOrderDetail.jsp");
+            HttpSession session = request.getSession();
+            session.setAttribute("user_id", user_id);
+            session.setAttribute("order", order);
+
+            response.sendRedirect(request.getContextPath()
+                    + "/CustomerChangeOrderDetail.jsp");
         }
     }
 }

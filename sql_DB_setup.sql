@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS user_has_destination;
+DROP TABLE IF EXISTS courier_log;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS destination;
 DROP TABLE IF EXISTS users;
@@ -56,6 +57,20 @@ INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, cus
 INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (4, 'Confirmed', 2.1, 7.9, 1, 2);
 INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id, courier_id) VALUES (5, 'Delivered', 1.5, 5.4, 3, 2, 4);
 INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id, courier_id) VALUES (6, 'Shipped', 14.5, 6.1, 3, 2, 3);
+
+CREATE TABLE courier_log (
+    courier_id INT REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
+    log_date DATE NOT NULL,
+    sent_count INT NOT NULL,
+    PRIMARY KEY(courier_id, log_date)
+);
+
+INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (3, '2019-10-03', 11);
+INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (3, '2019-10-04', 9);
+INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (3, '2019-10-05', 7);
+INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (4, '2019-10-03', 8);
+INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (4, '2019-10-04', 10);
+INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (4, '2019-10-05', 5);
 
 CREATE TABLE keys (
     table_name VARCHAR(50) NOT NULL,

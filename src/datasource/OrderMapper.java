@@ -1,6 +1,5 @@
 package datasource;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -103,31 +102,31 @@ public class OrderMapper {
         }
         return orders;
     }
-    
+
     /**
      * Fetch all orders for one courier according to his/her id.
      * 
      * @param courier_id
      * @return Retrieved list of orders.
      */
-    public List<Order> findAllOrdersForCourier(int courier_id) {
-       PreparedStatement findStatement = null;
-       ResultSet rs = null;
-       List<Order> orders = new ArrayList<>();
-       try {
-           findStatement = DBConnection.prepare(findAllOrdersForCourierLazy);
-           findStatement.setInt(1, courier_id);
-           findStatement.setString(2, "Shipped");
-           rs = findStatement.executeQuery();
-           while (rs.next()) {
-               int order_id = rs.getInt(1);
-               Order order = checkIdentityMap(order_id, true);
-               orders.add(order);
-           }
-       } catch (SQLException e) {
-       }
-       return orders;
-   }
+    public List<Order> findAllOrdersForCourier(int courier_id, String status) {
+        PreparedStatement findStatement = null;
+        ResultSet rs = null;
+        List<Order> orders = new ArrayList<>();
+        try {
+            findStatement = DBConnection.prepare(findAllOrdersForCourierLazy);
+            findStatement.setInt(1, courier_id);
+            findStatement.setString(2, status);
+            rs = findStatement.executeQuery();
+            while (rs.next()) {
+                int order_id = rs.getInt(1);
+                Order order = checkIdentityMap(order_id, true);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+        }
+        return orders;
+    }
 
     /**
      * Retrieve all data of one order. Lazy mode off.
@@ -141,24 +140,24 @@ public class OrderMapper {
         return checkIdentityMap(order_id, false);
     }
 
-    // return all confirmed 
-    public List<Order> findConfirmedOrders(){
-    	PreparedStatement findStatement = null;
-    	ResultSet rs = null;
-    	List<Order> orders = new ArrayList<>();
-    	try {
-    		findStatement = DBConnection.prepare(findConfirmedOrders);
-    		rs = findStatement.executeQuery();
-    		while (rs.next()) {
+    // return all confirmed
+    public List<Order> findConfirmedOrders() {
+        PreparedStatement findStatement = null;
+        ResultSet rs = null;
+        List<Order> orders = new ArrayList<>();
+        try {
+            findStatement = DBConnection.prepare(findConfirmedOrders);
+            rs = findStatement.executeQuery();
+            while (rs.next()) {
                 int order_id = rs.getInt(1);
                 Order order = checkIdentityMap(order_id, true);
                 orders.add(order);
             }
-    	}catch(SQLException e) {
-    	}
-    	return orders;
+        } catch (SQLException e) {
+        }
+        return orders;
     }
-   
+
     public void update(Order order) {
         PreparedStatement updateStatement = null;
         try {

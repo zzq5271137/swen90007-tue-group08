@@ -32,12 +32,13 @@ public class CustomerCreateNewOrderService extends HttpServlet {
             throws ServletException, IOException {
         int user_id = Integer.parseInt(request.getParameter("user_id"));
         // check session
-    	HttpSession session = request.getSession();
-    	session.setAttribute("user_id", user_id);
+        HttpSession session = request.getSession();
+        session.setAttribute("user_id", user_id);
         // request.setAttribute("user_id", user_id);
         // request.getRequestDispatcher("CustomerNewOrderForm.jsp")
-        //        .forward(request, response);
-    	response.sendRedirect(request.getContextPath()+"/CustomerNewOrderForm.jsp");
+        // .forward(request, response);
+        response.sendRedirect(
+                request.getContextPath() + "/CustomerNewOrderForm.jsp");
     }
 
 }

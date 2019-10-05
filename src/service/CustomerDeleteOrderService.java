@@ -39,26 +39,29 @@ public class CustomerDeleteOrderService extends HttpServlet {
         int user_id = Integer.parseInt(request.getParameter("user_id"));
 
         // check session
-    	HttpSession session = request.getSession();
-    	session.setAttribute("user_id", user_id);
-        
+        HttpSession session = request.getSession();
+        session.setAttribute("user_id", user_id);
+
         // request.setAttribute("user_id", user_id);
         if (status.equalsIgnoreCase(Order.SHIPPED_STATUS)) {
-            //request.getRequestDispatcher("ShippedOrderCannotChange.jsp")
-            //       .forward(request, response);
-            response.sendRedirect(request.getContextPath()+"/ShippedOrderCannotChange.jsp");
+            // request.getRequestDispatcher("ShippedOrderCannotChange.jsp")
+            // .forward(request, response);
+            response.sendRedirect(request.getContextPath()
+                    + "/ShippedOrderCannotChange.jsp");
         } else if (status.equalsIgnoreCase(Order.DELIVERED_STATUS)) {
-            //request.getRequestDispatcher("DeliveredOrderCannotChange.jsp")
-            //       .forward(request, response);
-        	response.sendRedirect(request.getContextPath()+"/DeliveredOrderCannotChange.jsp");
+            // request.getRequestDispatcher("DeliveredOrderCannotChange.jsp")
+            // .forward(request, response);
+            response.sendRedirect(request.getContextPath()
+                    + "/DeliveredOrderCannotChange.jsp");
         } else {
             int order_id = Integer.parseInt(request.getParameter("order_id"));
             User user = new Customer();
             user = IdentityMap.getInstance(user).get(user_id);
-            user.deleteOrder(order_id);
-            //request.getRequestDispatcher("CustomerDeleteOrderSuccess.jsp")
-            //        .forward(request, response);
-            response.sendRedirect(request.getContextPath()+"/CustomerDeleteOrderSuccess.jsp");
+            ((Customer)user).deleteOrder(order_id);
+            // request.getRequestDispatcher("CustomerDeleteOrderSuccess.jsp")
+            // .forward(request, response);
+            response.sendRedirect(request.getContextPath()
+                    + "/CustomerDeleteOrderSuccess.jsp");
         }
     }
 

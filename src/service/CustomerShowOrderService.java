@@ -37,21 +37,22 @@ public class CustomerShowOrderService extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-    	
-    	int user_id = Integer.parseInt(request.getParameter("user_id"));
+
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
         User user = new Customer();
         user = IdentityMap.getInstance(user).get(user_id);
         List<Order> orders = user.getAllOrders();
         // request.setAttribute("user_id", user_id);
         // request.setAttribute("orders", orders);
         // request.getRequestDispatcher("CustomerOrderList.jsp")
-        //        .forward(request, response);
+        // .forward(request, response);
 
-    	// check session
-    	HttpSession session = request.getSession();
-    	session.setAttribute("user_id", user_id);
-    	session.setAttribute("orders", orders);
-    	
-        response.sendRedirect(request.getContextPath()+"/CustomerOrderList.jsp");
+        // check session
+        HttpSession session = request.getSession();
+        session.setAttribute("user_id", user_id);
+        session.setAttribute("orders", orders);
+
+        response.sendRedirect(
+                request.getContextPath() + "/CustomerOrderList.jsp");
     }
 }
