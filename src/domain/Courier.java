@@ -7,9 +7,12 @@ import datasource.DestinationMapper;
 import datasource.IdentityMap;
 import datasource.KeyTable;
 import datasource.OrderMapper;
+import datasource.LogMapper;
 import datasource.UnityOfWork;
 
 public class Courier extends User {
+	
+	private List<CourierLog> myLog;
 	
     public Courier() {
         super();
@@ -57,21 +60,24 @@ public class Courier extends User {
     }
 
     // automatically update courier_log table by increasing the sent_count by 1
-    public void addToLog() {
-    	int sent_count = -1;
-    	OrderMapper mapper = new OrderMapper();
-    	sent_count = mapper.findCurrentLog(getUser_id());
-    	if(sent_count == -1) {
-    		mapper.insertToLog(getUser_id());
+    public void log() {
+    	CourierLog currentLog = null;
+    	LogMapper mapper = new LogMapper();
+    	currentLog = mapper.findCurrentLog(getUser_id());
+    	if(currentLog == null) {
+    		mapper.insert(getUser_id());
     	}else {
-    		mapper.updateLog(getUser_id(), ++sent_count);
+    		int current_count = currentLog.getSentCount();
+    		int newCount = current_count+1;
+    		currentLog.setSentCount(newCount);
+    		mapper.update(getUser_id(), newCount);
     	}
     }
     
     // delete my log
     public void deleteLog(Date chosen_date) {
     	java.sql.Date chosenDate=new java.sql.Date(chosen_date.getTime());
-    	OrderMapper mapper = new OrderMapper();
-    	mapper.deleteLog(getUser_id(), chosenDate);
+    	LogMapper mapper = new LogMapper();
+    	mapper.delete(getUser_id(), chosenDate);
     }
 }

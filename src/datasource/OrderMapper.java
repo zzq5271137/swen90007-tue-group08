@@ -17,17 +17,12 @@ import domain.User;
 public class OrderMapper {
 
     private static final String findAllOrdersForCustomerLazy = "SELECT order_id FROM orders WHERE customer_id = ?";
-    private static final String findAllOrdersForCourierLazy = "SELECT order_id FROM orders WHERE courier_id = ?";
+    private static final String findAllOrdersForCourierLazy = "SELECT order_id FROM orders WHERE courier_id = ? AND status =? ";
     private static final String findOrderFromOrderId = "SELECT status, item_size, item_weight, destination_id, customer_id, courier_id FROM orders WHERE order_id = ?";
     private static final String updateOrder = "UPDATE orders SET item_size = ?, item_weight = ?, destination_id = ? WHERE order_id = ?";
     private static final String insertNewOrder = "INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String deleteOrder = "DELETE FROM orders WHERE order_id = ?";
-    private static final String findConfirmedOrders = "SELECT order_id FROM orders WHERE status = Confirmed";
-    private static final String findAllLogForCourier = "SELECT log_date, sent_count FROM courier_log WHERE courier_id = ?";
-    private static final String findCurrentLog = "SELECT sent_count FROM courier_log WHERE courier_id = ? AND log_date = now()";
-    private static final String insertLog = "INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (?, now(), 1)";
-    private static final String updateLog = "UPDATE courier_log SET courier_id = ?, log_date = now(), sent_count = ?";    
-    private static final String deleteLog = "DELETE FROM courier_log WHERE courier_id = ?, log_date = ?";
+    private static final String findConfirmedOrders = "SELECT order_id FROM orders WHERE status = \"Confirmed\"";
 
     /**
      * Retrieve order object from Identity Map according to order_id. If the
@@ -109,6 +104,12 @@ public class OrderMapper {
         return orders;
     }
     
+    /**
+     * Fetch all orders for one courier according to his/her id.
+     * 
+     * @param courier_id
+     * @return Retrieved list of orders.
+     */
     public List<Order> findAllOrdersForCourier(int courier_id) {
        PreparedStatement findStatement = null;
        ResultSet rs = null;
@@ -116,6 +117,7 @@ public class OrderMapper {
        try {
            findStatement = DBConnection.prepare(findAllOrdersForCourierLazy);
            findStatement.setInt(1, courier_id);
+           findStatement.setString(2, "Shipped");
            rs = findStatement.executeQuery();
            while (rs.next()) {
                int order_id = rs.getInt(1);
@@ -139,23 +141,6 @@ public class OrderMapper {
         return checkIdentityMap(order_id, false);
     }
 
-    // return the current sent_count of this courier for today 
-    public int findCurrentLog(int courier_id) {
-    	int sent_count = -1;
-    	PreparedStatement findStatement = null;
-    	ResultSet rs = null;
-    	 try {
-             findStatement = DBConnection.prepare(findCurrentLog);
-             findStatement.setInt(1, courier_id);
-             rs = findStatement.executeQuery();
-             while (rs.next()) {
-                 sent_count = rs.getInt(1);
-             }
-         } catch (SQLException e) {
-         }
-		return sent_count;
-    }
-    
     // return all confirmed 
     public List<Order> findConfirmedOrders(){
     	PreparedStatement findStatement = null;
@@ -215,36 +200,4 @@ public class OrderMapper {
         }
     }
 
-    // insert into courier_log table 
-    public void insertToLog(int courier_id) {
-    	PreparedStatement insertStatement = null;
-    	try {
-    		insertStatement = DBConnection.prepare(insertLog);
-    		insertStatement.setInt(1, courier_id);
-    	}catch(SQLException e) {
-    	}
-    }
-    
-    // update courier_log table 
-    public void updateLog(int courier_id, int sent_count) {
-    	PreparedStatement updateStatement = null;
-    	try {
-    		updateStatement = DBConnection.prepare(updateLog);
-    		updateStatement.setInt(1, courier_id);
-    		updateStatement.setInt(2, sent_count);
-    	}catch(SQLException e) {
-    	}
-    }
-    
-    // delete a log record for a specific day
-    public void deleteLog(int courier_id, Date chosen_date) {
-    	 PreparedStatement deleteStatement = null;
-         try {
-             deleteStatement = DBConnection.prepare(deleteLog);
-             deleteStatement.setInt(1, courier_id);
-             deleteStatement.setDate(2, chosen_date);
-             deleteStatement.execute();
-         } catch (SQLException e) {
-         }
-    }
 }
