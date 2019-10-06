@@ -29,10 +29,11 @@ h1{
 </head>
 <body>
 	<div class='container'>
-		<h1>Orders</h1>
-		<a id='logout' href="CustomerLogin.jsp" class="btn btn-info btn-lg">
-          Log out
-        </a>
+		<h1>Orders </h1>
+		<form action="logout" method="post" id='logout'>
+			<button class="btn btn-info btn-lg">Log out</button>
+		</form>
+         
 		<table class='table table-bordered table-striped'>
 			<tr>
 				<th>Order Id</th>
