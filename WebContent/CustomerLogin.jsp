@@ -1,3 +1,4 @@
+<%@ page import="authentication.AppSession" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -32,6 +33,7 @@ input.input {
 <body>
 	<div id="root">
 		<h1>Customer Login</h1>
+		<% if (!AppSession.isAuthenticated()) { %>
 		<form action="CustomerLoginServlet" method="post">
 			<label> <input type="text" name="username"
 				placeholder="username" class="input">
@@ -39,6 +41,13 @@ input.input {
 				placeholder="password" class="input" >
 			</label> <br> <input type="submit" value="Login" class="submit btn btn-default">
 		</form>
+		<% } else { %>
+		You are already logged in as <%=AppSession.getUser().getUsername() %>
+		<form action="CustomerShowOrderService" method="post">
+			<button type="submit" name="user_id" value="${user_id }"
+				class="btn btn-default">View Your Orders</button>
+		</form>
+		<%} %>
 	</div>
 </body>
 </html>
