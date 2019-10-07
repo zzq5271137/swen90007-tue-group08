@@ -2,6 +2,8 @@ package domain;
 
 import java.util.List;
 
+import datasource.UserMapper;
+
 public abstract class User {
     public static final String CUSTOMER_TYPE = "customer";
     public static final String COURIER_TYPE = "courier";
@@ -50,5 +52,12 @@ public abstract class User {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public static User getUser(String username) {
+        User result = null;
+        UserMapper uMapper = new UserMapper();
+        result = uMapper.findWithUsername(username);
+        return result;
     }
 }

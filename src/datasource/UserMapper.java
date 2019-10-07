@@ -11,6 +11,7 @@ import domain.User;
 public class UserMapper {
     private static final String findUserWithUsernameAndPassword = "SELECT user_id, user_type FROM users WHERE username = ? AND password = ?";
     private static final String findUserWithUserId = "SELECT user_id FROM users WHERE user_id = ? AND user_type = ?";
+    private static final String findUserWithUsername = "SELECT user_id, user_type, password FROM users WHERE username = ?";
 
     public List<User> findWithUsernameAndPassword(String username,
             String password, String targetType) {
@@ -64,6 +65,29 @@ public class UserMapper {
                 }
             } catch (SQLException e) {
             }
+        }
+        return result;
+    }
+
+    public User findWithUsername(String username) {
+        PreparedStatement findStatement = null;
+        ResultSet rs = null;
+        User result = null;
+        try {
+            findStatement = DBConnection.prepare(findUserWithUsername);
+            findStatement.setString(1, username);
+            rs = findStatement.executeQuery();
+            if (rs.next()) {
+                int user_id = rs.getInt(1);
+                String user_type = rs.getString(2);
+                String password = rs.getString(3);
+
+                result = createUser(user_type, user_id);
+                result.setUsername(username);
+                result.setPassword(password);
+                result.setUser_type(user_type);
+            }
+        } catch (SQLException e) {
         }
         return result;
     }
