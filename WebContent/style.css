@@ -1,3 +1,6 @@
+h1{
+	display: inline-block;
+}
 div.box {
 	width: 35%;
 	border: 1px solid pink;

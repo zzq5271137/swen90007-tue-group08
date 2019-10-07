@@ -3,6 +3,8 @@ package controllers;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -11,9 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import authentication.AppSession;
 import datasource.IdentityMap;
 import domain.Customer;
 import domain.Destination;
+import domain.Order;
 import domain.User;
 
 /**
@@ -30,7 +34,10 @@ public class CustomerViewAddressesController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	doPost(req,resp);
+    }
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -38,23 +45,26 @@ public class CustomerViewAddressesController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
+        ServletContext servletContext = getServletContext();
 
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
-        User user = new Customer();
-        user = IdentityMap.getInstance(user).get(user_id);
-        List<Destination> addresses = ((Customer) user).getDestinations();
-        request.setAttribute("user_id", user_id);
-        request.setAttribute("addresses", addresses);
-        // request.getRequestDispatcher("CustomerAddressList.jsp")
-        // .forward(request, response);
+        if (AppSession.isAuthenticated()) {
+            if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
+                User user = AppSession.getUser();
+                int user_id = user.getUser_id();
 
-        // check session
-        HttpSession session = request.getSession();
-        session.setAttribute("user_id", user_id);
-        session.setAttribute("addresses", addresses);
+                List<Destination> addresses = ((Customer) user).getDestinations();
 
-        response.sendRedirect(
-                request.getContextPath() + "/CustomerAddressList.jsp");
+                request.setAttribute("user_id", user_id);
+                request.setAttribute("addresses", addresses);
+                String view = "/CustomerAddressList.jsp";
+                RequestDispatcher requestDispatcher = servletContext
+                        .getRequestDispatcher(view);
+                requestDispatcher.forward(request, response);
+            } else {
+                response.sendError(403);
+            }
+        } else {
+            response.sendError(401);
+        }
     }
-
 }

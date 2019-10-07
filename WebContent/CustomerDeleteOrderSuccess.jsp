@@ -8,6 +8,12 @@
 <title>Order Delete Success</title>
 <link rel='stylesheet' href='resources/bootstrap.min.css' />
 <style>
+#logout{
+	display: inline-block;
+	float: right;
+	margin-top:20px;
+	margin-bottom:10px
+}
 div#root {
 	text-align: center;
 }
@@ -21,6 +27,10 @@ div#root {
 <body>
 	<div id="root">
 		<h1>Order Delete Success!</h1>
+		<form action="logout" method="post" id='logout'>
+			<button class="btn btn-info btn-lg">Log out</button>
+		</form>
+		
 		<form action="CustomerShowOrderController" method="post">
 			<button type="submit" name="user_id" value="${user_id }"
 				class="btn btn-default">Back To Your Order List</button>

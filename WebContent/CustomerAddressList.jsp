@@ -9,6 +9,12 @@
 <link rel='stylesheet' href='resources/bootstrap.min.css' />
 <link rel='stylesheet' href='style.css' />
 <style>
+#logout{
+	display: inline-block;
+	float: right;
+	margin-top:20px;
+	margin-bottom:10px
+}
 #address {
 	float: left
 }
@@ -21,6 +27,9 @@
 <body>
 	<div class='container'>
 		<h1>Addresses</h1>
+		<form action="logout" method="post" id='logout'>
+			<button class="btn btn-info btn-lg">Log out</button>
+		</form>
 		<table class='table table-bordered table-striped'>
 			<tr>
 				<th>Id</th>

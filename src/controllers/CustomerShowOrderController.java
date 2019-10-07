@@ -54,7 +54,7 @@ public class CustomerShowOrderController extends HttpServlet {
                 response.sendError(403);
             }
         } else {
-            response.sendRedirect("LoginFailed.html");
+            response.sendRedirect("Login.jsp");
         }
     }
 

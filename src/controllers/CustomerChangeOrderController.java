@@ -31,6 +31,28 @@ public class CustomerChangeOrderController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ServletContext servletContext = getServletContext();
+        if (AppSession.isAuthenticated()) {
+            if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
+                String view = "/CustomerOrderList.jsp";
+                User user = AppSession.getUser();
+                List<Order> orders = user.getAllOrders();
+
+                request.setAttribute("user_id", user.getUser_id());
+                request.setAttribute("orders", orders);
+
+                RequestDispatcher requestDispatcher = servletContext
+                        .getRequestDispatcher(view);
+                requestDispatcher.forward(request, response);
+            } else {
+                response.sendError(403);
+            }
+        } else {
+            response.sendRedirect("Login.jsp");
+        }
+    }
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
