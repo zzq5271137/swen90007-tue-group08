@@ -20,14 +20,9 @@ a button {
 <body>
 	<div id="root">
 		<h1>Welcome to Parcel Delivery System</h1>
-		<a href="./CustomerLogin.jsp">
-			<button class="btn btn-default">Customer Login</button>
+		<a href="./Login.jsp">
+			<button class="btn btn-default">Login</button>
 		</a> 
-		<br> 
-		<br> 
-		<a href="./CourierLogin.jsp">
-			<button class="btn btn-default">Courier Login</button>
-		</a>
 	</div>
 </body>
 </html>

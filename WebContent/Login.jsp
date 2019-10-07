@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Customer Login</title>
+<title>Login</title>
 <link rel='stylesheet' href='resources/bootstrap.min.css' />
 <style>
 div#root {
@@ -32,9 +32,9 @@ input.input {
 </head>
 <body>
 	<div id="root">
-		<h1>Customer Login</h1>
+		<h1>Login</h1>
 		<% if (!AppSession.isAuthenticated()) { %>
-		<form action="CustomerLoginServlet" method="post">
+		<form action="LoginController" method="post">
 			<label> 
 			    <input type="text" name="username" placeholder="username" class="input">
 			</label> 

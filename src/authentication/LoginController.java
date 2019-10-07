@@ -24,26 +24,31 @@ import datasource.UserMapper;
 import domain.User;
 
 /**
- * Servlet implementation class CustomerLoginServlet
+ * Servlet implementation class LoginController
  */
-@WebServlet("/CustomerLoginServlet")
-public class CustomerLoginServlet extends HttpServlet {
+@WebServlet("/LoginController")
+public class LoginController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerLoginServlet() {
+    public LoginController() {
         super();
     }
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String view = "/CustomerLogin.jsp";
-    	
-    	ServletContext servletContext = getServletContext();
-        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        String view = "/Login.jsp";
+
+        ServletContext servletContext = getServletContext();
+        RequestDispatcher requestDispatcher = servletContext
+                .getRequestDispatcher(view);
         requestDispatcher.forward(request, response);
     }
+
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -54,29 +59,32 @@ public class CustomerLoginServlet extends HttpServlet {
         response.setContentType("text/html");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username,
+                password);
         token.setRememberMe(true);
         Subject currentUser = SecurityUtils.getSubject();
 
         String view = "/CustomerLogin.jsp";
-        
+
         try {
-        	// Authenticate the subject by passing the username and password token into the login method
-        	currentUser.login(token);
-        	User user = User.getUser(username);
-        	AppSession.init(user);
-        	if(user.getUser_type().equals(AppSession.CUSTOMER_ROLE)) {
-        		view = "/CustomerLoginSuccess.jsp";
-        	}else {
-        		// if the user is courier, the page will direct to courier homepage
-        		// view = "/CourierHomePage.jsp";
-        	}
+            // Authenticate the subject by passing the username and password token into the
+            // login method
+            currentUser.login(token);
+            User user = User.getUser(username);
+            AppSession.init(user);
+            if (user.getUser_type().equals(AppSession.CUSTOMER_ROLE)) {
+                view = "/CustomerLoginSuccess.jsp";
+            } else {
+                // if the user is courier, the page will direct to courier homepage
+                view = "/CourierLoginSuccess.jsp";
+            }
         } catch (UnknownAccountException | IncorrectCredentialsException e) {
-        	view = "/LoginFailed.html";
+            view = "/LoginFailed.html";
         } finally {
-        	ServletContext servletContext = getServletContext();
-        	RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);
-        	requestDispatcher.forward(request, response);
+            ServletContext servletContext = getServletContext();
+            RequestDispatcher requestDispatcher = servletContext
+                    .getRequestDispatcher(view);
+            requestDispatcher.forward(request, response);
         }
     }
 }

@@ -24,7 +24,7 @@ public class CustomerLogoutController extends HttpServlet {
             currentUser.logout();
         }
 
-        String view = "/CustomerLogin.jsp";
+        String view = "/Login.jsp";
 
         ServletContext servletContext = getServletContext();
         RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);

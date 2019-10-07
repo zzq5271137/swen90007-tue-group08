@@ -20,7 +20,7 @@ import domain.User;
 
 public class AppRealm extends JdbcRealm{
 
-	private CredentialsMatcher credentialsMatcher;
+//	private CredentialsMatcher credentialsMatcher;
 	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
@@ -63,9 +63,9 @@ public class AppRealm extends JdbcRealm{
 		return new SimpleAuthorizationInfo(roles);
 	}
 
-	@Override
-	public CredentialsMatcher getCredentialsMatcher() {
-		return credentialsMatcher;
-	}
+//	@Override
+//	public CredentialsMatcher getCredentialsMatcher() {
+//		return credentialsMatcher;
+//	}
 }
 
