@@ -298,20 +298,6 @@ INSERT INTO
 VALUES
   (4, '2019-10-05', 5);
 
-CREATE TABLE courier_log (
-    courier_id INT REFERENCES users(user_id) ON DELETE CASCADE NOT NULL,
-    log_date DATE NOT NULL,
-    sent_count INT NOT NULL,
-    PRIMARY KEY(courier_id, log_date)
-);
-
-INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (3, '2019-10-03', 11);
-INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (3, '2019-10-04', 9);
-INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (3, '2019-10-05', 7);
-INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (4, '2019-10-03', 8);
-INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (4, '2019-10-04', 10);
-INSERT INTO courier_log(courier_id, log_date, sent_count) VALUES (4, '2019-10-05', 5);
-
 CREATE TABLE keys (
     table_name VARCHAR(50) NOT NULL,
     next_id INT NOT NULL,
