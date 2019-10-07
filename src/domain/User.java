@@ -13,7 +13,14 @@ public abstract class User {
     private String password;
     private String user_type;
     protected List<Order> orders;
-
+    
+    public static User getUser(String username) {
+    	User result = null;
+    	UserMapper uMapper = new UserMapper();
+    	result = uMapper.findWithUsername(username);
+    	return result;
+    }
+    
     public int getUser_id() {
         return user_id;
     }
