@@ -8,6 +8,7 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
@@ -19,6 +20,8 @@ import domain.User;
 
 public class AppRealm extends JdbcRealm{
 
+	private CredentialsMatcher credentialsMatcher;
+	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		// identify account to log to
@@ -27,15 +30,9 @@ public class AppRealm extends JdbcRealm{
     	
 		final User user = User.getUser(username);
 		
-    	System.out.println("the user's username in userpasstoken is: " + username);
-
 		if(user == null) {
 			System.out.println("No account found for user with username " + username);
 			return null;
-		}else {
-			
-	    	System.out.println("the user's user pw in userpasstoken is: " + user.getPassword());
-
 		}
 		// collect the subject's principal (username) and credential (password)
 		// and submit them to an authentication system
@@ -65,4 +62,10 @@ public class AppRealm extends JdbcRealm{
 		}
 		return new SimpleAuthorizationInfo(roles);
 	}
+
+	@Override
+	public CredentialsMatcher getCredentialsMatcher() {
+		return credentialsMatcher;
+	}
 }
+

@@ -2,8 +2,6 @@ package authentication;
 
 import domain.User;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.shiro.SecurityUtils;
 
 public class AppSession {
@@ -21,8 +19,6 @@ public class AppSession {
     }
 
     public static void init(User user) {
-    	System.out.println("the user has been added to session: " + user.getUsername());
-
         SecurityUtils.getSubject().getSession().setAttribute(USER_ATTRIBUTE_NAME, user);
     }
 

@@ -40,6 +40,7 @@ public class CustomerChangeOrderService extends HttpServlet {
             throws ServletException, IOException {
     	ServletContext servletContext = getServletContext();
     	
+    	// Apply Session Pattern & Check authorization 
     	if (AppSession.isAuthenticated()) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
             	String status = request.getParameter("status");
@@ -49,6 +50,8 @@ public class CustomerChangeOrderService extends HttpServlet {
                 request.setAttribute("user_id", user_id);
                 String view = "/CustomerOrderList.jsp";
                 
+                // Apply MVC pattern 
+                // The user is not allowed to change the order unless the status is "Confirmed"
                 if (status.equalsIgnoreCase(Order.SHIPPED_STATUS)) {
                 	view = "/ShippedOrderCannotChange.jsp";
                 } else if (status.equalsIgnoreCase(Order.DELIVERED_STATUS)) {
