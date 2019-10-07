@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Login Success</title>
+<title>Pick Order Success</title>
 <link rel='stylesheet' href='resources/bootstrap.min.css' />
 <style>
 div#root {
@@ -20,10 +20,15 @@ div#root {
 </head>
 <body>
 	<div id="root">
-		<h1>Login Success!</h1>
-		<form action="CustomerShowOrderController" method="post">
+		<h1>Pick Order Success!</h1>
+		<form action="CourierShowDeliveringOrderController" method="post">
 			<button type="submit" name="user_id" value="${user_id }"
-				class="btn btn-default">View Your Orders</button>
+				class="btn btn-default">Back To Your Delivering Order List</button>
+		</form>
+		<br>
+		<form action="CourierPickOrdersController" method="post">
+			<button type="submit" name="user_id" value="${user_id }"
+				class="btn btn-default">Back To Continue Order Pick</button>
 		</form>
 	</div>
 </body>

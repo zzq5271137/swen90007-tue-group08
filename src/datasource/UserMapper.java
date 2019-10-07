@@ -9,8 +9,8 @@ import domain.Customer;
 import domain.User;
 
 public class UserMapper {
-    private static final String findUserWithUsernameAndPassword = "SELECT user_id, user_type FROM users WHERE username = ? and password = ?";
-    private static final String findUserWithUserId = "SELECT user_id FROM users WHERE user_id = ? and user_type = ?";
+    private static final String findUserWithUsernameAndPassword = "SELECT user_id, user_type FROM users WHERE username = ? AND password = ?";
+    private static final String findUserWithUserId = "SELECT user_id FROM users WHERE user_id = ? AND user_type = ?";
 
     public List<User> findWithUsernameAndPassword(String username,
             String password, String targetType) {

@@ -16,12 +16,14 @@ import domain.User;
 public class OrderMapper {
 
     private static final String findAllOrdersForCustomerLazy = "SELECT order_id FROM orders WHERE customer_id = ?";
-    private static final String findAllOrdersForCourierLazy = "SELECT order_id FROM orders WHERE courier_id = ? AND status =? ";
     private static final String findOrderFromOrderId = "SELECT status, item_size, item_weight, destination_id, customer_id, courier_id FROM orders WHERE order_id = ?";
-    private static final String updateOrder = "UPDATE orders SET item_size = ?, item_weight = ?, destination_id = ? WHERE order_id = ?";
+    private static final String updateOrderDetail = "UPDATE orders SET item_size = ?, item_weight = ?, destination_id = ? WHERE order_id = ?";
     private static final String insertNewOrder = "INSERT INTO orders(order_id, status, item_size, item_weight, destination_id, customer_id) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String deleteOrder = "DELETE FROM orders WHERE order_id = ?";
-    private static final String findConfirmedOrders = "SELECT order_id FROM orders WHERE status = \"Confirmed\"";
+
+    private static final String findAllOrdersForCourierLazy = "SELECT order_id FROM orders WHERE courier_id = ? AND status = ?";
+    private static final String findOrdersWithStatus = "SELECT order_id FROM orders WHERE status = ?";
+    private static final String updateOrderShipment = "UPDATE orders SET status = ?, courier_id = ? WHERE order_id = ?";
 
     /**
      * Retrieve order object from Identity Map according to order_id. If the
@@ -104,9 +106,70 @@ public class OrderMapper {
     }
 
     /**
+     * Retrieve all data of one order. Lazy mode off.
+     * 
+     * @param order_id
+     *            The id of the order.
+     * @return Retrieved order.
+     * @throws SQLException
+     */
+    public Order findOrderFromOrderId(int order_id) throws SQLException {
+        return checkIdentityMap(order_id, false);
+    }
+
+    public void insert(Order order) {
+        PreparedStatement insertStatement = null;
+        try {
+            insertStatement = DBConnection.prepare(insertNewOrder);
+            insertStatement.setInt(1, order.getOrder_id());
+            insertStatement.setString(2, order.getStatus());
+            insertStatement.setFloat(3, order.getItem().getItem_size());
+            insertStatement.setFloat(4, order.getItem().getItem_weight());
+            insertStatement.setInt(5,
+                    order.getDestination().getDestination_id());
+            insertStatement.setInt(6, order.getCustomer().getUser_id());
+            insertStatement.execute();
+        } catch (SQLException e) {
+
+        }
+    }
+
+    /**
+     * Update the details(item information, destination) of the order.
+     * 
+     * @param order
+     */
+    public void updateDetailOfOrder(Order order) {
+        PreparedStatement updateStatement = null;
+        try {
+            updateStatement = DBConnection.prepare(updateOrderDetail);
+            updateStatement.setFloat(1, order.getItem().getItem_size());
+            updateStatement.setFloat(2, order.getItem().getItem_weight());
+            updateStatement.setInt(3,
+                    order.getDestination().getDestination_id());
+            updateStatement.setInt(4, order.getOrder_id());
+            updateStatement.execute();
+        } catch (SQLException e) {
+        }
+    }
+
+    public void delete(Order order) {
+        PreparedStatement deleteStatement = null;
+        try {
+            deleteStatement = DBConnection.prepare(deleteOrder);
+            deleteStatement.setInt(1, order.getOrder_id());
+            deleteStatement.execute();
+        } catch (SQLException e) {
+        }
+    }
+
+    /**
      * Fetch all orders for one courier according to his/her id.
      * 
      * @param courier_id
+     *            The id of the courier for whom retrieve the orders.
+     * @param status
+     *            The status of the orders need to be retrieved
      * @return Retrieved list of orders.
      */
     public List<Order> findAllOrdersForCourier(int courier_id, String status) {
@@ -129,24 +192,17 @@ public class OrderMapper {
     }
 
     /**
-     * Retrieve all data of one order. Lazy mode off.
+     * Retrieve all confirmed(new) orders
      * 
-     * @param order_id
-     *            The id of the order.
-     * @return Retrieved order.
-     * @throws SQLException
+     * @return Retrieved list of orders.
      */
-    public Order findOrderFromOrderId(int order_id) throws SQLException {
-        return checkIdentityMap(order_id, false);
-    }
-
-    // return all confirmed
-    public List<Order> findConfirmedOrders() {
+    public List<Order> findAllConfirmedOrders() {
         PreparedStatement findStatement = null;
         ResultSet rs = null;
         List<Order> orders = new ArrayList<>();
         try {
-            findStatement = DBConnection.prepare(findConfirmedOrders);
+            findStatement = DBConnection.prepare(findOrdersWithStatus);
+            findStatement.setString(1, "Confirmed");
             rs = findStatement.executeQuery();
             while (rs.next()) {
                 int order_id = rs.getInt(1);
@@ -158,45 +214,20 @@ public class OrderMapper {
         return orders;
     }
 
-    public void update(Order order) {
+    /**
+     * Update the shipment information of the order.
+     * 
+     * @param order
+     */
+    public void updateShipmentOfOrder(Order order) {
         PreparedStatement updateStatement = null;
         try {
-            updateStatement = DBConnection.prepare(updateOrder);
-            updateStatement.setFloat(1, order.getItem().getItem_size());
-            updateStatement.setFloat(2, order.getItem().getItem_weight());
-            updateStatement.setInt(3,
-                    order.getDestination().getDestination_id());
-            updateStatement.setInt(4, order.getOrder_id());
+            updateStatement = DBConnection.prepare(updateOrderShipment);
+            updateStatement.setString(1, order.getStatus());
+            updateStatement.setInt(2, order.getCourier().getUser_id());
+            updateStatement.setInt(3, order.getOrder_id());
             updateStatement.execute();
         } catch (SQLException e) {
         }
     }
-
-    public void insert(Order order) {
-        PreparedStatement insertStatement = null;
-        try {
-            insertStatement = DBConnection.prepare(insertNewOrder);
-            insertStatement.setInt(1, order.getOrder_id());
-            insertStatement.setString(2, order.getStatus());
-            insertStatement.setFloat(3, order.getItem().getItem_size());
-            insertStatement.setFloat(4, order.getItem().getItem_weight());
-            insertStatement.setInt(5,
-                    order.getDestination().getDestination_id());
-            insertStatement.setInt(6, order.getCustomer().getUser_id());
-            insertStatement.execute();
-        } catch (SQLException e) {
-
-        }
-    }
-
-    public void delete(Order order) {
-        PreparedStatement deleteStatement = null;
-        try {
-            deleteStatement = DBConnection.prepare(deleteOrder);
-            deleteStatement.setInt(1, order.getOrder_id());
-            deleteStatement.execute();
-        } catch (SQLException e) {
-        }
-    }
-
 }

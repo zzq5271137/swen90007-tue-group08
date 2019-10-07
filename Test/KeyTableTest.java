@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 public class KeyTableTest extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<h1>" + KeyTable.getKey("users") + " </h1>");
     }

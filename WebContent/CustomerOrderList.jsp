@@ -52,7 +52,7 @@ h1{
 					<td>${order.destination.address }</td>
 					<td>${order.status }</td>
 					<td colspan="2" align="center">
-						<form action="CustomerChangeOrderService" method="post">
+						<form action="CustomerChangeOrderController" method="post">
 							<input type="hidden" name="user_id" value="${user_id }">
 							<input type="hidden" name="status" value="${order.status }">
 							<button type="submit" name="order_id" value="${order.order_id }"
@@ -60,7 +60,7 @@ h1{
 						</form>
 					</td>
 					<td colspan="2" align="center">
-						<form action="CustomerDeleteOrderService" method="post">
+						<form action="CustomerDeleteOrderController" method="post">
 							<input type="hidden" name="user_id" value="${user_id }">
 							<input type="hidden" name="status" value="${order.status }">
 							<button type="submit" name="order_id" value="${order.order_id }"
@@ -72,13 +72,13 @@ h1{
 			</c:forEach>
 		</table>
 		<div id='address'>
-			<form action="CustomerViewAddresses" method="post">
+			<form action="CustomerViewAddressesController" method="post">
 				<button type="submit" name="user_id" value="${user_id }"
 					class="btn btn-default">View Your History Target Addresses</button>
 			</form>
 		</div>
 		<div id='add'>
-			<form action="CustomerCreateNewOrderService" method="post">
+			<form action="CustomerCreateNewOrderController" method="post">
 				<button type="submit" name="user_id" value="${user_id }"
 					class="btn btn-default">Add New Order</button>
 			</form>

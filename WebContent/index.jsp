@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +22,11 @@ a button {
 		<h1>Welcome to Parcel Delivery System</h1>
 		<a href="./CustomerLogin.jsp">
 			<button class="btn btn-default">Customer Login</button>
+		</a> 
+		<br> 
+		<br> 
+		<a href="./CourierLogin.jsp">
+			<button class="btn btn-default">Courier Login</button>
 		</a>
 	</div>
 </body>

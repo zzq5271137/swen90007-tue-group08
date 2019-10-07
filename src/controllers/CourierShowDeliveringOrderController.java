@@ -1,30 +1,34 @@
-package service;
+package controllers;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import datasource.IdentityMap;
-import domain.Customer;
+import domain.Courier;
+import domain.Order;
 import domain.User;
 
 /**
- * Servlet implementation class CustomerConfirmNewOrderService
+ * Servlet implementation class CourierShowDeliveringOrderController
  */
-@WebServlet("/CustomerConfirmNewOrderService")
-public class CustomerConfirmNewOrderService extends HttpServlet {
+@WebServlet("/CourierShowDeliveringOrderController")
+public class CourierShowDeliveringOrderController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerConfirmNewOrderService() {
+    public CourierShowDeliveringOrderController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -34,23 +38,20 @@ public class CustomerConfirmNewOrderService extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        float item_size = Float.parseFloat(request.getParameter("item_size"));
-        float item_weight = Float
-                .parseFloat(request.getParameter("item_weight"));
-        String address = request.getParameter("address");
         int user_id = Integer.parseInt(request.getParameter("user_id"));
-        User user = new Customer();
+        User user = new Courier();
         user = IdentityMap.getInstance(user).get(user_id);
-        ((Customer)user).CreateNewOrder(item_size, item_weight, address);
+        List<Order> orders = user.getAllOrders();
         // request.setAttribute("user_id", user_id);
-        // request.getRequestDispatcher("CustomerNewOrderSuccess.jsp")
+        // request.setAttribute("orders", orders);
+        // request.getRequestDispatcher("CustomerOrderList.jsp")
         // .forward(request, response);
 
         // check session
         HttpSession session = request.getSession();
         session.setAttribute("user_id", user_id);
-
+        session.setAttribute("orders", orders);
         response.sendRedirect(
-                request.getContextPath() + "/CustomerNewOrderSuccess.jsp");
+                request.getContextPath() + "/CourierDeliveringOrderList.jsp");
     }
 }

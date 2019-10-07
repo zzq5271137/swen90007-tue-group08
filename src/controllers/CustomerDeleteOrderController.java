@@ -1,4 +1,4 @@
-package service;
+package controllers;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -14,16 +14,16 @@ import domain.Order;
 import domain.User;
 
 /**
- * Servlet implementation class CustomerDeleteOrderService
+ * Servlet implementation class CustomerDeleteOrderController
  */
-@WebServlet("/CustomerDeleteOrderService")
-public class CustomerDeleteOrderService extends HttpServlet {
+@WebServlet("/CustomerDeleteOrderController")
+public class CustomerDeleteOrderController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerDeleteOrderService() {
+    public CustomerDeleteOrderController() {
         super();
         // TODO Auto-generated constructor stub
     }

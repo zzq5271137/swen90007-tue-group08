@@ -1,32 +1,31 @@
-package service;
+package controllers;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import datasource.IdentityMap;
-import domain.Customer;
-import domain.Destination;
+import domain.Courier;
+import domain.Order;
 import domain.User;
 
 /**
- * Servlet implementation class CustomerViewAddresses
+ * Servlet implementation class CourierPickOrdersController
  */
-@WebServlet("/CustomerViewAddresses")
-public class CustomerViewAddresses extends HttpServlet {
+@WebServlet("/CourierPickOrdersController")
+public class CourierPickOrdersController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerViewAddresses() {
+    public CourierPickOrdersController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,23 +37,16 @@ public class CustomerViewAddresses extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-
         int user_id = Integer.parseInt(request.getParameter("user_id"));
-        User user = new Customer();
+        User user = new Courier();
         user = IdentityMap.getInstance(user).get(user_id);
-        List<Destination> addresses = ((Customer) user).getDestinations();
-        request.setAttribute("user_id", user_id);
-        request.setAttribute("addresses", addresses);
-        // request.getRequestDispatcher("CustomerAddressList.jsp")
-        // .forward(request, response);
+        List<Order> orders = ((Courier) user).inspectAllNewOrders();
 
-        // check session
         HttpSession session = request.getSession();
         session.setAttribute("user_id", user_id);
-        session.setAttribute("addresses", addresses);
-
+        session.setAttribute("orders", orders);
         response.sendRedirect(
-                request.getContextPath() + "/CustomerAddressList.jsp");
+                request.getContextPath() + "/CourierInspectAllNewOrders.jsp");
     }
 
 }

@@ -1,6 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import datasource.DestinationMapper;
@@ -33,8 +32,7 @@ public class Customer extends User {
     public List<Destination> getDestinations() {
         if (this.destinations == null) {
             DestinationMapper dMapper = new DestinationMapper();
-            this.destinations = dMapper
-                    .findAllAddressForCustomer(getUser_id());
+            setDestinations(dMapper.findAllAddressForCustomer(getUser_id()));
         }
         return this.destinations;
     }
@@ -95,7 +93,7 @@ public class Customer extends User {
         Item item = new Item(item_size, item_weight);
         order.setItem(item);
         iMap.put(order_id, order);
-        
+
         UnityOfWork.newCurrent();
         UnityOfWork.getCurrent().registerDirty(order);
         UnityOfWork.getCurrent().commit();

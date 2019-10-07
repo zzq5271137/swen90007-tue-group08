@@ -19,7 +19,8 @@ public class DestinationMapper {
         ResultSet rs = null;
         Destination destination = null;
         try {
-            findStatement = DBConnection.prepare(findDestinationFromDestinationId);
+            findStatement = DBConnection
+                    .prepare(findDestinationFromDestinationId);
             findStatement.setInt(1, destination_id);
             rs = findStatement.executeQuery();
             rs.next();
@@ -56,9 +57,11 @@ public class DestinationMapper {
             insertAddressStatement.setString(2, destination.getAddress());
             insertAddressStatement.execute();
 
-            insertAssociationStatement = DBConnection.prepare(insertIntoAssociationTable);
+            insertAssociationStatement = DBConnection
+                    .prepare(insertIntoAssociationTable);
             insertAssociationStatement.setInt(1, user_id);
-            insertAssociationStatement.setInt(2, destination.getDestination_id());
+            insertAssociationStatement.setInt(2,
+                    destination.getDestination_id());
             insertAssociationStatement.execute();
         } catch (SQLException e) {
         }

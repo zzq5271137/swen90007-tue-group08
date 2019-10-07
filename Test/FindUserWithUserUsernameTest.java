@@ -15,7 +15,6 @@ import domain.User;
 public class FindUserWithUserUsernameTest extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         UserMapper um = new UserMapper();
         String username = "zhengqingz";

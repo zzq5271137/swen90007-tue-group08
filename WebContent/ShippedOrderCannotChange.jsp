@@ -22,7 +22,7 @@ div#root {
     <div id="root">
         <h1>Order Change Fail!</h1>
         <h1>Order is on its way, cannot change it!</h1>
-        <form action="CustomerShowOrderService" method="post">
+        <form action="CustomerShowOrderController" method="post">
             <button type="submit" name="user_id" value="${user_id }"
                 class="btn btn-default">Back To Your Order List</button>
         </form>

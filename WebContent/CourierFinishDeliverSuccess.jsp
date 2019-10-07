@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Order Delete Success</title>
+<title>Finish Delivery Success</title>
 <link rel='stylesheet' href='resources/bootstrap.min.css' />
 <style>
 div#root {
@@ -20,10 +20,10 @@ div#root {
 </head>
 <body>
     <div id="root">
-        <h1>Order Delete Success!</h1>
-        <form action="CustomerShowOrderService" method="post">
+        <h1>Finish Delivery Success!</h1>
+        <form action="CourierShowDeliveringOrderController" method="post">
             <button type="submit" name="user_id" value="${user_id }"
-                class="btn btn-default">Back To Your Order List</button>
+                class="btn btn-default">Back To Your Delivering Order List</button>
         </form>
     </div>
 </body>

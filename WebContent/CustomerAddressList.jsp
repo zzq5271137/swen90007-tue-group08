@@ -36,7 +36,7 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<form action="CustomerShowOrderService" method="post">
+		<form action="CustomerShowOrderController" method="post">
             <button type="submit" name="user_id" value="${user_id }"
                 class="btn btn-default">Back To Your Order List</button>
         </form>

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Order Change Fail</title>
+<title>Delete Log Success</title>
 <link rel='stylesheet' href='resources/bootstrap.min.css' />
 <style>
 div#root {
@@ -20,11 +20,15 @@ div#root {
 </head>
 <body>
     <div id="root">
-        <h1>Order Change Fail!</h1>
-        <h1>Order is finished, cannot change it!</h1>
-        <form action="CustomerShowOrderController" method="post">
+        <h1>Delete Log Success!</h1>
+        <form action="CourierShowLogsController" method="post">
             <button type="submit" name="user_id" value="${user_id }"
-                class="btn btn-default">Back To Your Order List</button>
+                class="btn btn-default">Back To Your Log List</button>
+        </form>
+        <br>
+        <form action="CourierShowDeliveringOrderController" method="post">
+            <button type="submit" name="user_id" value="${user_id }"
+                class="btn btn-default">Back To Your Delivering Order List</button>
         </form>
     </div>
 </body>

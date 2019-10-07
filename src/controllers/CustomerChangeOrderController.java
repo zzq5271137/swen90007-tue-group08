@@ -1,4 +1,4 @@
-package service;
+package controllers;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -12,16 +12,16 @@ import datasource.IdentityMap;
 import domain.Order;
 
 /**
- * Servlet implementation class CustomerChangeOrderService
+ * Servlet implementation class CustomerChangeOrderController
  */
-@WebServlet("/CustomerChangeOrderService")
-public class CustomerChangeOrderService extends HttpServlet {
+@WebServlet("/CustomerChangeOrderController")
+public class CustomerChangeOrderController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerChangeOrderService() {
+    public CustomerChangeOrderController() {
         super();
         // TODO Auto-generated constructor stub
     }

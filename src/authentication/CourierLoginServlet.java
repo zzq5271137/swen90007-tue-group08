@@ -18,14 +18,14 @@ import domain.User;
 /**
  * Servlet implementation class CustomerLoginServlet
  */
-@WebServlet("/CustomerLoginServlet")
-public class CustomerLoginServlet extends HttpServlet {
+@WebServlet("/CourierLoginServlet")
+public class CourierLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerLoginServlet() {
+    public CourierLoginServlet() {
         super();
     }
 
@@ -59,7 +59,7 @@ public class CustomerLoginServlet extends HttpServlet {
         }
 
         List<User> results = um.findWithUsernameAndPassword(username, password,
-                User.CUSTOMER_TYPE);
+                User.COURIER_TYPE);
 
         if (results.size() == 0) {
             response.sendRedirect("LoginFailed.html");
@@ -94,7 +94,7 @@ public class CustomerLoginServlet extends HttpServlet {
             // request.getRequestDispatcher("CustomerLoginSuccess.jsp")
             // .forward(request, response);
             response.sendRedirect(
-                    request.getContextPath() + "/CustomerLoginSuccess.jsp");
+                    request.getContextPath() + "/CourierLoginSuccess.jsp");
         }
     }
 }

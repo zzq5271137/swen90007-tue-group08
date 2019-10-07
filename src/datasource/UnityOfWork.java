@@ -54,7 +54,7 @@ public class UnityOfWork {
             oMapper.insert(order);
         }
         for (Order order : dirtyOrders) {
-            oMapper.update(order);
+            oMapper.updateDetailOfOrder(order);
         }
         for (Order order : deletedOrders) {
             oMapper.delete(order);

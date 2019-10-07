@@ -33,11 +33,15 @@ input.input {
 	<div id="root">
 		<h1>Customer Login</h1>
 		<form action="CustomerLoginServlet" method="post">
-			<label> <input type="text" name="username"
-				placeholder="username" class="input">
-			</label> <br> <label> <input type="password" name="password"
-				placeholder="password" class="input" >
-			</label> <br> <input type="submit" value="Login" class="submit btn btn-default">
+			<label> 
+			    <input type="text" name="username" placeholder="username" class="input">
+			</label> 
+			<br> 
+			<label> 
+			    <input type="password" name="password" placeholder="password" class="input" >
+			</label> 
+			<br> 
+			<input type="submit" value="Login" class="submit btn btn-default">
 		</form>
 	</div>
 </body>

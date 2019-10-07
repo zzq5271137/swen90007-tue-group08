@@ -1,4 +1,4 @@
-package service;
+package controllers;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -13,16 +13,16 @@ import domain.Customer;
 import domain.User;
 
 /**
- * Servlet implementation class CustomerConfirmOrderChangeService
+ * Servlet implementation class CustomerConfirmNewOrderController
  */
-@WebServlet("/CustomerConfirmOrderChangeService")
-public class CustomerConfirmOrderChangeService extends HttpServlet {
+@WebServlet("/CustomerConfirmNewOrderController")
+public class CustomerConfirmNewOrderController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerConfirmOrderChangeService() {
+    public CustomerConfirmNewOrderController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,26 +34,23 @@ public class CustomerConfirmOrderChangeService extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-
-        int order_id = Integer.parseInt(request.getParameter("order_id"));
         float item_size = Float.parseFloat(request.getParameter("item_size"));
         float item_weight = Float
                 .parseFloat(request.getParameter("item_weight"));
         String address = request.getParameter("address");
         int user_id = Integer.parseInt(request.getParameter("user_id"));
-
         User user = new Customer();
         user = IdentityMap.getInstance(user).get(user_id);
-        ((Customer)user).ChangeOrderDetail(order_id, item_size, item_weight, address);
-
+        ((Customer)user).CreateNewOrder(item_size, item_weight, address);
         // request.setAttribute("user_id", user_id);
-        // request.getRequestDispatcher("CustomerOrderChangeSuccess.jsp")
+        // request.getRequestDispatcher("CustomerNewOrderSuccess.jsp")
         // .forward(request, response);
 
+        // check session
+        HttpSession session = request.getSession();
         session.setAttribute("user_id", user_id);
-        response.sendRedirect(
-                request.getContextPath() + "/CustomerOrderChangeSuccess.jsp");
-    }
 
+        response.sendRedirect(
+                request.getContextPath() + "/CustomerNewOrderSuccess.jsp");
+    }
 }
