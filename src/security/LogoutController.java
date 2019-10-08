@@ -1,4 +1,4 @@
-package authentication;
+package security;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;

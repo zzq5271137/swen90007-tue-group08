@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import authentication.AppSession;
 import datasource.IdentityMap;
 import domain.Courier;
 import domain.CourierLog;
 import domain.Order;
 import domain.User;
+import security.AppSession;
 
 /**
  * Servlet implementation class CourierShowDeliveringOrderController
