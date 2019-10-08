@@ -33,7 +33,7 @@ input.input {
 <body>
 	<div id="root">
 		<h1>Login</h1>
-		<% if (!AppSession.isAuthenticated()) { %>
+		<% if (!AppSession.isAuthenticated() || AppSession.getUser()==null) { %>
 		<form action="LoginController" method="post">
 			<label> 
 			    <input type="text" name="username" placeholder="username" class="input">

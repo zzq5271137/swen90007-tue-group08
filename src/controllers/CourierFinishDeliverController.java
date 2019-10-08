@@ -35,7 +35,7 @@ public class CourierFinishDeliverController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	ServletContext servletContext = getServletContext();
-    	if(AppSession.isAuthenticated()) {
+    	if(AppSession.isAuthenticated() && AppSession.getUser()!=null) {
     		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
     			String view = "/CourierDeliveringOrderList.jsp";
                 User user = AppSession.getUser();
@@ -47,9 +47,11 @@ public class CourierFinishDeliverController extends HttpServlet {
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
     		}else {
+    			// invalid authorization
                 response.sendError(403);
             }
     	}else {
+    		// invalid authentication credentials for this user
             response.sendError(401);
         }
     }

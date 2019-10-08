@@ -9,6 +9,9 @@
 <link rel='stylesheet' href='resources/bootstrap.min.css' />
 <link rel='stylesheet' href='style.css' />
 <style>
+#h1{
+	display: inline-block
+}
 #logout{
 	display: inline-block;
 	float: right;
@@ -26,7 +29,7 @@
 </head>
 <body>
 	<div class='container'>
-		<h1>Addresses</h1>
+		<h1 id = 'h1'>Addresses</h1>
 		<form action="logout" method="post" id='logout'>
 			<button class="btn btn-info btn-lg">Log out</button>
 		</form>

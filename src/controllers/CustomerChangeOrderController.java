@@ -34,7 +34,7 @@ public class CustomerChangeOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated()) {
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 String view = "/CustomerOrderList.jsp";
                 User user = AppSession.getUser();

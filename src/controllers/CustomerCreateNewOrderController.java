@@ -42,7 +42,7 @@ public class CustomerCreateNewOrderController extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated()) {
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null ) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 User user = AppSession.getUser();
                 int user_id = user.getUser_id();

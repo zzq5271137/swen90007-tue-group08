@@ -36,7 +36,7 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated()) {
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 String view = "/CustomerOrderList.jsp";
                 User user = AppSession.getUser();
@@ -66,6 +66,7 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
 
         if (AppSession.isAuthenticated()) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
+            	
             	float item_size = Float.parseFloat(request.getParameter("item_size"));
                 float item_weight = Float
                         .parseFloat(request.getParameter("item_weight"));
@@ -73,12 +74,9 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
                 
                 User user = AppSession.getUser();
                 int user_id = user.getUser_id();
-
-                ((Customer)user).CreateNewOrder(item_size, item_weight, address);
-
-                request.setAttribute("user_id", user_id);
-                
+              
                 String view = "/CustomerNewOrderSuccess.jsp";
+                request.setAttribute("user_id", user_id);
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);

@@ -48,7 +48,7 @@ public class CourierShowLogsController extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
     	ServletContext servletContext = getServletContext();
-    	if(AppSession.isAuthenticated()) {
+    	if(AppSession.isAuthenticated() && AppSession.getUser()!=null) {
     		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
     			String view = "/CourierLogList.jsp";
                 User user = AppSession.getUser();

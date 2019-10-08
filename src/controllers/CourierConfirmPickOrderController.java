@@ -37,7 +37,7 @@ public class CourierConfirmPickOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	ServletContext servletContext = getServletContext();
-    	if(AppSession.isAuthenticated()) {
+    	if(AppSession.isAuthenticated() && AppSession.getUser()!=null) {
     		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
     			String view = "/CourierInspectAllNewOrders.jsp";
                 User user = AppSession.getUser();
