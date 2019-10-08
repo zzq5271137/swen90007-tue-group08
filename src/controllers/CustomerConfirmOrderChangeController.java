@@ -76,7 +76,7 @@ public class CustomerConfirmOrderChangeController extends HttpServlet {
                  ((Customer)user).ChangeOrderDetail(order_id, item_size, item_weight, address);
                  
                  request.setAttribute("user_id", user_id);
-                 String view = "CustomerOrderChangeSuccess.jsp";
+                 String view = "/CustomerOrderChangeSuccess.jsp";
                  RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);
                  requestDispatcher.forward(request, response);
              }else {

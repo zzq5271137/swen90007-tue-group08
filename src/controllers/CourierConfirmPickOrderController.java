@@ -52,7 +52,7 @@ public class CourierConfirmPickOrderController extends HttpServlet {
                 response.sendError(403);
             }
     	}else {
-            response.sendError(401);
+    		response.sendRedirect("Login.jsp");
         }
     }
     /**

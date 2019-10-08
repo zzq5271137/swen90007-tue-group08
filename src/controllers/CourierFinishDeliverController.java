@@ -51,8 +51,7 @@ public class CourierFinishDeliverController extends HttpServlet {
                 response.sendError(403);
             }
     	}else {
-    		// invalid authentication credentials for this user
-            response.sendError(401);
+    		response.sendRedirect("Login.jsp");
         }
     }
     /**

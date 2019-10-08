@@ -37,7 +37,11 @@ public class CourierShowDeliveringOrderController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	doPost(req, resp);
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
+        	doPost(req,resp);
+        } else {
+            resp.sendRedirect("Login.jsp");
+        }
     }
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

@@ -33,12 +33,13 @@ public class CourierShowLogsController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
     @Override
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-       doPost(request, response);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
+        	doPost(req,resp);
+        } else {
+            resp.sendRedirect("Login.jsp");
+        }
     }
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
