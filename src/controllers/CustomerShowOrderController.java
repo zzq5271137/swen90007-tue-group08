@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import security.AppSession;
 import datasource.IdentityMap;
 import domain.Customer;
 import domain.Order;
 import domain.User;
-import security.AppSession;
 
 /**
  * Servlet implementation class CustomerShowOrderService
@@ -38,7 +38,7 @@ public class CustomerShowOrderController extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 String view = "/CustomerOrderList.jsp";
                 User user = AppSession.getUser();

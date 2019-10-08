@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import security.AppSession;
 import datasource.IdentityMap;
 import domain.Courier;
 import domain.CourierLog;
 import domain.Order;
 import domain.User;
-import security.AppSession;
 
 /**
  * Servlet implementation class CourierDeleteLogController
@@ -33,31 +33,27 @@ public class CourierDeleteLogController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
     @Override
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
-            if (AppSession.hasRole(AppSession.COURIER_ROLE)) {
-                String view = "/CourierLogList.jsp";
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	ServletContext servletContext = getServletContext();
+    	if(AppSession.isAuthenticated() && AppSession.getUser()!=null) {
+    		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
+    			String view = "/CourierLogList.jsp";
                 User user = AppSession.getUser();
-
+                
                 List<CourierLog> myLogs = ((Courier) user).getMyLogs();
                 request.setAttribute("user_id", user.getUser_id());
                 request.setAttribute("myLogs", myLogs); // ????
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
-            } else {
+    		}else {
                 response.sendError(403);
             }
-        } else {
-            response.sendError(401);
+    	}else {
+    		response.sendRedirect("Login.jsp");
         }
     }
-
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -65,23 +61,23 @@ public class CourierDeleteLogController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated()) {
-            if (AppSession.hasRole(AppSession.COURIER_ROLE)) {
-                String view = "/CourierDeleteLogSuccess.jsp";
+    	ServletContext servletContext = getServletContext();
+    	if(AppSession.isAuthenticated()) {
+    		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
+    			String view = "/CourierDeleteLogSuccess.jsp";
                 User user = AppSession.getUser();
-
+                
                 String date = request.getParameter("date");
                 ((Courier) user).deleteLog(date);
-
+                
                 request.setAttribute("user_id", user.getUser_id());
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
-            } else {
+    		}else {
                 response.sendError(403);
             }
-        } else {
+    	}else {
             response.sendError(401);
         }
     }

@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import security.AppSession;
 import datasource.IdentityMap;
 import domain.Customer;
 import domain.Order;
 import domain.User;
-import security.AppSession;
 
 /**
  * Servlet implementation class CustomerConfirmNewOrderController
@@ -34,11 +34,9 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 String view = "/CustomerOrderList.jsp";
                 User user = AppSession.getUser();
@@ -57,7 +55,6 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
             response.sendRedirect("Login.jsp");
         }
     }
-
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -69,20 +66,18 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
 
         if (AppSession.isAuthenticated()) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
-                float item_size = Float
-                        .parseFloat(request.getParameter("item_size"));
+            	float item_size = Float.parseFloat(request.getParameter("item_size"));
                 float item_weight = Float
                         .parseFloat(request.getParameter("item_weight"));
                 String address = request.getParameter("address");
-
+                
                 User user = AppSession.getUser();
                 int user_id = user.getUser_id();
 
-                ((Customer) user).CreateNewOrder(item_size, item_weight,
-                        address);
+                ((Customer)user).CreateNewOrder(item_size, item_weight, address);
 
                 request.setAttribute("user_id", user_id);
-
+                
                 String view = "/CustomerNewOrderSuccess.jsp";
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);

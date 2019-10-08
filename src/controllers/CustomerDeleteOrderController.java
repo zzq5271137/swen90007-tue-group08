@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import security.AppSession;
 import datasource.IdentityMap;
 import domain.Customer;
 import domain.Order;
 import domain.User;
-import security.AppSession;
 
 /**
  * Servlet implementation class CustomerDeleteOrderController
@@ -32,13 +32,12 @@ public class CustomerDeleteOrderController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 String view = "/CustomerOrderList.jsp";
                 User user = AppSession.getUser();
@@ -57,7 +56,6 @@ public class CustomerDeleteOrderController extends HttpServlet {
             response.sendRedirect("Login.jsp");
         }
     }
-
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -69,25 +67,24 @@ public class CustomerDeleteOrderController extends HttpServlet {
 
         if (AppSession.isAuthenticated()) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
-                String status = request.getParameter("status");
+            	String status = request.getParameter("status");
                 User user = AppSession.getUser();
                 int user_id = user.getUser_id();
 
                 String view = "/CustomerOrderList.jsp";
-
+                
                 if (status.equalsIgnoreCase(Order.SHIPPED_STATUS)) {
-                    view = "/ShippedOrderCannotChange.jsp";
+                	view = "/ShippedOrderCannotChange.jsp";
                 } else if (status.equalsIgnoreCase(Order.DELIVERED_STATUS)) {
-                    view = "/DeliveredOrderCannotChange.jsp";
+                	view = "/DeliveredOrderCannotChange.jsp";
                 } else {
-                    int order_id = Integer
-                            .parseInt(request.getParameter("order_id"));
+                    int order_id = Integer.parseInt(request.getParameter("order_id"));
 
-                    ((Customer) user).deleteOrder(order_id);
+                    ((Customer)user).deleteOrder(order_id);
                     view = "/CustomerOrderChangeSuccess.jsp";
                 }
                 request.setAttribute("user_id", user_id);
-
+                
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
@@ -97,7 +94,7 @@ public class CustomerDeleteOrderController extends HttpServlet {
         } else {
             response.sendError(401);
         }
-
+       
     }
 
 }

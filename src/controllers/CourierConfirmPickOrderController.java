@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import security.AppSession;
 import datasource.IdentityMap;
 import domain.Courier;
 import domain.CourierLog;
 import domain.Order;
 import domain.User;
-import security.AppSession;
 
 /**
  * Servlet implementation class CourierConfirmPickOrderController
@@ -34,31 +34,27 @@ public class CourierConfirmPickOrderController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
     @Override
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
-            if (AppSession.hasRole(AppSession.COURIER_ROLE)) {
-                String view = "/CourierInspectAllNewOrders.jsp";
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	ServletContext servletContext = getServletContext();
+    	if(AppSession.isAuthenticated() && AppSession.getUser()!=null) {
+    		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
+    			String view = "/CourierInspectAllNewOrders.jsp";
                 User user = AppSession.getUser();
-
+                
                 List<Order> orders = ((Courier) user).inspectAllNewOrders();
                 request.setAttribute("user_id", user.getUser_id());
                 request.setAttribute("orders", orders);
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
-            } else {
+    		}else {
                 response.sendError(403);
             }
-        } else {
-            response.sendError(401);
+    	}else {
+    		response.sendRedirect("Login.jsp");
         }
     }
-
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -66,14 +62,13 @@ public class CourierConfirmPickOrderController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated()) {
-            if (AppSession.hasRole(AppSession.COURIER_ROLE)) {
-                String view = "/CourierPickOrderSuccess.jsp";
+    	ServletContext servletContext = getServletContext();
+    	if(AppSession.isAuthenticated()) {
+    		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
+    			String view = "/CourierPickOrderSuccess.jsp";
                 User user = AppSession.getUser();
-
-                int order_id = Integer
-                        .parseInt(request.getParameter("order_id"));
+                
+                int order_id = Integer.parseInt(request.getParameter("order_id"));
                 try {
                     ((Courier) user).confirmPickOrder(order_id);
 
@@ -84,10 +79,10 @@ public class CourierConfirmPickOrderController extends HttpServlet {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            } else {
+    		}else {
                 response.sendError(403);
             }
-        } else {
+    	}else {
             response.sendError(401);
         }
     }

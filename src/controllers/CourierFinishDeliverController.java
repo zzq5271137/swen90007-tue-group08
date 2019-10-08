@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import security.AppSession;
 import datasource.IdentityMap;
 import domain.Courier;
 import domain.Order;
 import domain.User;
-import security.AppSession;
 
 /**
  * Servlet implementation class CourierFinishDeliverController
@@ -32,33 +32,28 @@ public class CourierFinishDeliverController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
     @Override
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
-            if (AppSession.hasRole(AppSession.COURIER_ROLE)) {
-                String view = "/CourierDeliveringOrderList.jsp";
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	ServletContext servletContext = getServletContext();
+    	if(AppSession.isAuthenticated() && AppSession.getUser()!=null) {
+    		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
+    			String view = "/CourierDeliveringOrderList.jsp";
                 User user = AppSession.getUser();
-
+                
                 List<Order> orders = user.getAllOrders();
                 request.setAttribute("user_id", user.getUser_id());
                 request.setAttribute("orders", orders);
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
-            } else {
-                // invalid authorization
+    		}else {
+    			// invalid authorization
                 response.sendError(403);
             }
-        } else {
-            // invalid authentication credentials for this user
-            response.sendError(401);
+    	}else {
+    		response.sendRedirect("Login.jsp");
         }
     }
-
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -66,14 +61,13 @@ public class CourierFinishDeliverController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated()) {
-            if (AppSession.hasRole(AppSession.COURIER_ROLE)) {
-                String view = "/CourierFinishDeliverSuccess.jsp";
+    	ServletContext servletContext = getServletContext();
+    	if(AppSession.isAuthenticated()) {
+    		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
+    			String view = "/CourierFinishDeliverSuccess.jsp";
                 User user = AppSession.getUser();
-
-                int order_id = Integer
-                        .parseInt(request.getParameter("order_id"));
+                
+                int order_id = Integer.parseInt(request.getParameter("order_id"));
                 ((Courier) user).markDelivered(order_id);
                 ((Courier) user).logWork();
 
@@ -81,10 +75,10 @@ public class CourierFinishDeliverController extends HttpServlet {
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
-            } else {
+    		}else {
                 response.sendError(403);
             }
-        } else {
+    	}else {
             response.sendError(401);
         }
     }
