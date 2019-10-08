@@ -13,7 +13,7 @@ public abstract class User {
     private String password;
     private String user_type;
     protected List<Order> orders;
-    
+
     public int getUser_id() {
         return user_id;
     }

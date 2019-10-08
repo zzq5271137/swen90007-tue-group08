@@ -19,10 +19,12 @@ public class AppSession {
     }
 
     public static void init(User user) {
-        SecurityUtils.getSubject().getSession().setAttribute(USER_ATTRIBUTE_NAME, user);
+        SecurityUtils.getSubject().getSession()
+                .setAttribute(USER_ATTRIBUTE_NAME, user);
     }
 
     public static User getUser() {
-        return (User) SecurityUtils.getSubject().getSession().getAttribute(USER_ATTRIBUTE_NAME);
+        return (User) SecurityUtils.getSubject().getSession()
+                .getAttribute(USER_ATTRIBUTE_NAME);
     }
 }

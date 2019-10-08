@@ -38,8 +38,9 @@ public class CourierShowLogsController extends HttpServlet {
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-       doPost(request, response);
+        doPost(request, response);
     }
+
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -47,22 +48,22 @@ public class CourierShowLogsController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-    	ServletContext servletContext = getServletContext();
-    	if(AppSession.isAuthenticated() && AppSession.getUser()!=null) {
-    		if(AppSession.hasRole(AppSession.COURIER_ROLE)) {
-    			String view = "/CourierLogList.jsp";
+        ServletContext servletContext = getServletContext();
+        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
+            if (AppSession.hasRole(AppSession.COURIER_ROLE)) {
+                String view = "/CourierLogList.jsp";
                 User user = AppSession.getUser();
-                
+
                 List<CourierLog> myLogs = ((Courier) user).getMyLogs();
                 request.setAttribute("user_id", user.getUser_id());
-                request.setAttribute("myLogs", myLogs); 
+                request.setAttribute("myLogs", myLogs);
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
-    		}else {
+            } else {
                 response.sendError(403);
             }
-    	}else {
+        } else {
             response.sendError(401);
         }
     }

@@ -18,54 +18,58 @@ import domain.Courier;
 import domain.Customer;
 import domain.User;
 
-public class AppRealm extends JdbcRealm{
+public class AppRealm extends JdbcRealm {
 
-//	private CredentialsMatcher credentialsMatcher;
-	
-	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		// identify account to log to
-		UsernamePasswordToken userPassToken = (UsernamePasswordToken) token;
-		final String username = userPassToken.getUsername();
-    	
-		final User user = User.getUser(username);
-		
-		if(user == null) {
-			System.out.println("No account found for user with username " + username);
-			return null;
-		}
-		// collect the subject's principal (username) and credential (password)
-		// and submit them to an authentication system
-		return new SimpleAuthenticationInfo(username, user.getPassword(), getName());
-	}
-	
-	@Override
-	protected AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {
-		Set<String> roles = new HashSet<>();
-		if(principals.isEmpty()) {
-			System.out.println("Given principals to authorize are empty.");
-			return null;
-		}
-		
-		String username = (String) principals.getPrimaryPrincipal();
-		final User user = User.getUser(username);
-		
-		if(user == null){
-			System.out.println("No account found for user with username " + username);
-			return null;
-		}
-		
-		if(user instanceof Customer) {
-			roles.add(AppSession.CUSTOMER_ROLE);
-		}else if(user instanceof Courier) {
-			roles.add(AppSession.COURIER_ROLE);
-		}
-		return new SimpleAuthorizationInfo(roles);
-	}
+    // private CredentialsMatcher credentialsMatcher;
 
-//	@Override
-//	public CredentialsMatcher getCredentialsMatcher() {
-//		return credentialsMatcher;
-//	}
+    @Override
+    protected AuthenticationInfo doGetAuthenticationInfo(
+            AuthenticationToken token) throws AuthenticationException {
+        // identify account to log to
+        UsernamePasswordToken userPassToken = (UsernamePasswordToken) token;
+        final String username = userPassToken.getUsername();
+
+        final User user = User.getUser(username);
+
+        if (user == null) {
+            System.out.println(
+                    "No account found for user with username " + username);
+            return null;
+        }
+        // collect the subject's principal (username) and credential (password)
+        // and submit them to an authentication system
+        return new SimpleAuthenticationInfo(username, user.getPassword(),
+                getName());
+    }
+
+    @Override
+    protected AuthorizationInfo getAuthorizationInfo(
+            PrincipalCollection principals) {
+        Set<String> roles = new HashSet<>();
+        if (principals.isEmpty()) {
+            System.out.println("Given principals to authorize are empty.");
+            return null;
+        }
+
+        String username = (String) principals.getPrimaryPrincipal();
+        final User user = User.getUser(username);
+
+        if (user == null) {
+            System.out.println(
+                    "No account found for user with username " + username);
+            return null;
+        }
+
+        if (user instanceof Customer) {
+            roles.add(AppSession.CUSTOMER_ROLE);
+        } else if (user instanceof Courier) {
+            roles.add(AppSession.COURIER_ROLE);
+        }
+        return new SimpleAuthorizationInfo(roles);
+    }
+
+    // @Override
+    // public CredentialsMatcher getCredentialsMatcher() {
+    // return credentialsMatcher;
+    // }
 }
-

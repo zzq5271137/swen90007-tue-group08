@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/logout")
-public class CustomerLogoutController extends HttpServlet {
+public class LogoutController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException {
+            HttpServletResponse response) throws IOException {
 
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()) {
@@ -27,12 +27,13 @@ public class CustomerLogoutController extends HttpServlet {
         String view = "/Login.jsp";
 
         ServletContext servletContext = getServletContext();
-        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);
+        RequestDispatcher requestDispatcher = servletContext
+                .getRequestDispatcher(view);
         try {
-			requestDispatcher.forward(request, response);
-		} catch (ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            requestDispatcher.forward(request, response);
+        } catch (ServletException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

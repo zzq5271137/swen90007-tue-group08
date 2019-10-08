@@ -30,10 +30,14 @@ public class CustomerCreateNewOrderController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
         doPost(request, response);
     }
+
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -42,19 +46,20 @@ public class CustomerCreateNewOrderController extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser()!=null ) {
+        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 User user = AppSession.getUser();
                 int user_id = user.getUser_id();
-                
+
                 request.setAttribute("user_id", user_id);
                 String view = "/CustomerNewOrderForm.jsp";
-                RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);
+                RequestDispatcher requestDispatcher = servletContext
+                        .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
-            }else {
+            } else {
                 response.sendError(403);
             }
-        }else {
+        } else {
             response.sendError(401);
         }
     }

@@ -34,10 +34,13 @@ public class CustomerViewAddressesController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	doPost(req,resp);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        doPost(req, resp);
     }
+
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -46,12 +49,13 @@ public class CustomerViewAddressesController extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
+        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 User user = AppSession.getUser();
                 int user_id = user.getUser_id();
 
-                List<Destination> addresses = ((Customer) user).getDestinations();
+                List<Destination> addresses = ((Customer) user)
+                        .getDestinations();
 
                 request.setAttribute("user_id", user_id);
                 request.setAttribute("addresses", addresses);
