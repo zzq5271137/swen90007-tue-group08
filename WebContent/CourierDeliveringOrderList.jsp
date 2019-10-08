@@ -30,9 +30,9 @@ h1{
 <body>
     <div class='container'>
         <h1>Orders</h1>
-        <a id='logout' href="Login.jsp" class="btn btn-info btn-lg">
-          Log out
-        </a>
+        <form action="logout" method="post" id='logout'>
+			<button class="btn btn-info btn-lg">Log out</button>
+		</form>
         <table class='table table-bordered table-striped'>
             <tr>
                 <th>Order Id</th>

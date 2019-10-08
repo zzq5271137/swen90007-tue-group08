@@ -33,7 +33,7 @@ input.input {
 <body>
 	<div id="root">
 		<h1>Login</h1>
-		<% if (!AppSession.isAuthenticated()) { %>
+		<% if (!AppSession.isAuthenticated() || AppSession.getUser()==null) { %>
 		<form action="LoginController" method="post">
 			<label> 
 			    <input type="text" name="username" placeholder="username" class="input">
@@ -46,11 +46,27 @@ input.input {
 			<input type="submit" value="Login" class="submit btn btn-default">
 		</form>
 		<% } else { %>
-		You are already logged in as <%=AppSession.getUser().getUsername() %>
-		<form action="CustomerShowOrderService" method="post">
-			<button type="submit" name="user_id" value="${user_id }"
-				class="btn btn-default">View Your Orders</button>
-		</form>
+		
+			<% if(AppSession.getUser().getUser_type().equals(AppSession.CUSTOMER_ROLE)) {%>
+				You are already logged in as <%=AppSession.getUser().getUsername() %>
+				<form action="CustomerShowOrderController" method="post">
+					<button type="submit" name="user_id" value="${user_id }"
+						class="btn btn-default">View Your Orders</button>
+				</form>
+			<%} else if(AppSession.getUser().getUser_type().equals(AppSession.CUSTOMER_ROLE)){%>
+				You are already logged in as <%=AppSession.getUser().getUsername() %>
+				<form action="CourierShowDeliveringOrderController" method="post">
+					<button type="submit" name="user_id" value="${user_id }"
+						class="btn btn-default">View Your Orders</button>
+				</form>
+			<%} else {%>
+				<div id="root">
+					<h1>Welcome to Parcel Delivery System</h1>
+						<a href="./Login.jsp">
+							<button class="btn btn-default">Login</button>
+						</a> 
+				</div>
+			<%}%>
 		<%} %>
 	</div>
 </body>

@@ -35,6 +35,7 @@ input.input {
 <body>
     <div id="root">
         <h1>Order Detail</h1>
+		
         <form action="CustomerConfirmOrderChangeController" method="post">
             <label> 
                 Item size:

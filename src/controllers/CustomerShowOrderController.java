@@ -38,7 +38,7 @@ public class CustomerShowOrderController extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated()) {
+        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
                 String view = "/CustomerOrderList.jsp";
                 User user = AppSession.getUser();
@@ -54,7 +54,7 @@ public class CustomerShowOrderController extends HttpServlet {
                 response.sendError(403);
             }
         } else {
-            response.sendRedirect("LoginFailed.html");
+            response.sendRedirect("Login.jsp");
         }
     }
 
