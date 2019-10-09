@@ -22,6 +22,7 @@ import org.apache.shiro.subject.Subject;
 import datasource.IdentityMap;
 import datasource.UserMapper;
 import domain.User;
+import service.ValidatorCheckService;
 
 /**
  * Servlet implementation class LoginController
@@ -59,32 +60,43 @@ public class LoginController extends HttpServlet {
         response.setContentType("text/html");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        UsernamePasswordToken token = new UsernamePasswordToken(username,
-                password);
-        token.setRememberMe(true);
-        Subject currentUser = SecurityUtils.getSubject();
-
+        
         String view = "/CustomerLogin.jsp";
-
-        try {
-            // Authenticate the subject by passing the username and password token into the
-            // login method
-            currentUser.login(token);
-            User user = User.getUser(username);
-            AppSession.init(user);
-            if (user.getUser_type().equals(AppSession.CUSTOMER_ROLE)) {
-                view = "/CustomerLoginSuccess.jsp";
-            } else {
-                // if the user is courier, the page will direct to courier homepage
-                view = "/CourierLoginSuccess.jsp";
-            }
-        } catch (UnknownAccountException | IncorrectCredentialsException e) {
-            view = "/LoginFailed.html";
-        } finally {
-            ServletContext servletContext = getServletContext();
+        // check whether the username is valid or not
+        ValidatorCheckService vadilator = new ValidatorCheckService();
+        
+        if(!vadilator.checkLoginParam(username, password)){
+        	view = "/LoginInvalid.jsp";
+        	ServletContext servletContext = getServletContext();
             RequestDispatcher requestDispatcher = servletContext
                     .getRequestDispatcher(view);
             requestDispatcher.forward(request, response);
+        }else {
+	        UsernamePasswordToken token = new UsernamePasswordToken(username,
+	                password);
+	        System.out.println("the password in the token is: "+ token.getCredentials().toString());
+	        token.setRememberMe(true);
+	        Subject currentUser = SecurityUtils.getSubject();
+	        
+	        try {
+	            // Authenticate the subject by passing the username and password token into the
+	            // login method
+	            currentUser.login(token);
+	            User user = User.getUser(username);
+	            AppSession.init(user);
+	            if (user.getUser_type().equals(AppSession.CUSTOMER_ROLE)) {
+	                view = "/CustomerLoginSuccess.jsp";
+	            } else {
+	                view = "/CourierLoginSuccess.jsp";
+	            }
+	        } catch (UnknownAccountException | IncorrectCredentialsException e) {
+	            view = "/LoginFailed.html";
+	        } finally {
+	            ServletContext servletContext = getServletContext();
+	            RequestDispatcher requestDispatcher = servletContext
+	                    .getRequestDispatcher(view);
+	            requestDispatcher.forward(request, response);
+	        }
         }
     }
 }

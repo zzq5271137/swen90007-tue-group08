@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import security.AppSession;
+import service.ValidatorCheckService;
 import datasource.IdentityMap;
 import domain.Customer;
 import domain.Order;
@@ -65,18 +66,29 @@ public class CustomerConfirmOrderChangeController extends HttpServlet {
          if (AppSession.isAuthenticated()) {
              if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
             	 int order_id = Integer.parseInt(request.getParameter("order_id"));
-                 float item_size = Float.parseFloat(request.getParameter("item_size"));
-                 float item_weight = Float
-                         .parseFloat(request.getParameter("item_weight"));
-                 String address = request.getParameter("address");
+            	 // get the parameters from request
+            	 String item_size_string = request.getParameter("item_size");
+            	 String item_weight_string = request.getParameter("item_weight");
+            	 String address = request.getParameter("address");
+            	 // check whether the inputs are valid or not
+            	 ValidatorCheckService vadilator = new ValidatorCheckService();
+            	 String view = "/CustomerOrderList.jsp";
                  
-                 User user = AppSession.getUser();
-                 int user_id = user.getUser_id();
-                 
-                 ((Customer)user).ChangeOrderDetail(order_id, item_size, item_weight, address);
-                 
-                 request.setAttribute("user_id", user_id);
-                 String view = "/CustomerOrderChangeSuccess.jsp";
+                 if(!vadilator.checkOrderParam(item_size_string, item_weight_string, address)){
+                	 view = "/InputInvalid.jsp";
+                 }else {
+                	 float item_size = Float.parseFloat(item_size_string);
+                     float item_weight = Float.parseFloat(item_weight_string);
+                     
+                     User user = AppSession.getUser();
+                     int user_id = user.getUser_id();
+                     
+                     ((Customer)user).ChangeOrderDetail(order_id, item_size, item_weight, address);
+                     
+                     request.setAttribute("user_id", user_id);
+                     view = "/CustomerOrderChangeSuccess.jsp";
+                 }
+            	 
                  RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);
                  requestDispatcher.forward(request, response);
              }else {
