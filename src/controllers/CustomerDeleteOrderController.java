@@ -81,7 +81,7 @@ public class CustomerDeleteOrderController extends HttpServlet {
                     int order_id = Integer.parseInt(request.getParameter("order_id"));
 
                     ((Customer)user).deleteOrder(order_id);
-                    view = "/CustomerOrderChangeSuccess.jsp";
+                    view = "/CustomerDeleteOrderSuccess.jsp";
                 }
                 request.setAttribute("user_id", user_id);
                 

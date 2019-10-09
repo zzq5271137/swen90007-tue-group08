@@ -3,12 +3,16 @@ package domain;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import concurrency.LockManager;
+
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import datasource.IOrderMapper;
 import datasource.IdentityMap;
-import datasource.OrderMapper;
 import datasource.LogMapper;
+import datasource.OrderLockingMapper;
 
 public class Courier extends User {
 
@@ -29,7 +33,7 @@ public class Courier extends User {
     // delivering, so only need to retrieve orders that the status is Shipped
     @Override
     public List<Order> getAllOrders() {
-        OrderMapper mapper = new OrderMapper();
+        IOrderMapper mapper = new OrderLockingMapper();
         orders = mapper.findAllOrdersForCourier(getUser_id(), "Shipped");
         setOrders(orders);
         return orders;
@@ -37,7 +41,7 @@ public class Courier extends User {
 
     // get all Confirmed(new) orders from order pool
     public List<Order> inspectAllNewOrders() {
-        OrderMapper mapper = new OrderMapper();
+        IOrderMapper mapper = new OrderLockingMapper();
         orders = mapper.findAllConfirmedOrders();
         return orders;
     }
@@ -45,7 +49,7 @@ public class Courier extends User {
     // set status of these selected orders to be Shipped and the courier_id of this
     // orders to be the id of this courier
     public void confirmPickOrder(int order_id) throws SQLException {
-        OrderMapper mapper = new OrderMapper();
+        IOrderMapper mapper = new OrderLockingMapper();
         Order order = new Order();
         IdentityMap<Order> iMap = IdentityMap.getInstance(order);
         order = mapper.findOrderFromOrderId(order_id);
@@ -53,6 +57,7 @@ public class Courier extends User {
         order.setStatus("Shipped");
         iMap.put(order_id, order);
         mapper.updateShipmentOfOrder(order);
+        LockManager.getInstance().releaseWriteLock(order);
     }
 
     // change the order status to "Delivered" directly
@@ -61,8 +66,9 @@ public class Courier extends User {
         IdentityMap<Order> iMap = IdentityMap.getInstance(order);
         order = iMap.get(order_id);
         order.setStatus("Delivered");
-        OrderMapper mapper = new OrderMapper();
+        IOrderMapper mapper = new OrderLockingMapper();
         mapper.updateShipmentOfOrder(order);
+        LockManager.getInstance().releaseWriteLock(order);
     }
 
     // get all logs related to this courier
