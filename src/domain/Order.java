@@ -1,7 +1,10 @@
 package domain;
 
 import java.sql.SQLException;
-import datasource.OrderMapper;
+
+import concurrency.LockManager;
+import datasource.IOrderMapper;
+import datasource.OrderLockingMapper;
 
 public class Order {
     public static final String CONFIRMED_STATUS = "Confirmed";
@@ -97,7 +100,7 @@ public class Order {
 
     // lazy load -- ghost
     public void load() throws SQLException {
-        OrderMapper mapper = new OrderMapper();
+        IOrderMapper mapper = new OrderLockingMapper();
         Order order = mapper.findOrderFromOrderId(order_id);
         if (status == null) {
             setStatus(order.getStatus());
@@ -111,5 +114,6 @@ public class Order {
         if (customer == null) {
             setCustomer(order.getCustomer());
         }
+        LockManager.getInstance().releaseReadLock(order);
     }
 }

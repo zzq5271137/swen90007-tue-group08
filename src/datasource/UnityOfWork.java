@@ -3,6 +3,7 @@ package datasource;
 import java.util.ArrayList;
 import java.util.List;
 
+import concurrency.LockManager;
 import domain.Order;
 
 public class UnityOfWork {
@@ -49,15 +50,18 @@ public class UnityOfWork {
     }
 
     public void commit() {
-        OrderMapper oMapper = new OrderMapper();
+        IOrderMapper mapper = new OrderLockingMapper();
         for (Order order : newOrders) {
-            oMapper.insert(order);
+            mapper.insert(order);
+            LockManager.getInstance().releaseWriteLock(order);
         }
         for (Order order : dirtyOrders) {
-            oMapper.updateDetailOfOrder(order);
+            mapper.updateDetailOfOrder(order);
+            LockManager.getInstance().releaseWriteLock(order);
         }
         for (Order order : deletedOrders) {
-            oMapper.delete(order);
+            mapper.delete(order);
+            LockManager.getInstance().releaseWriteLock(order);
         }
     }
 }

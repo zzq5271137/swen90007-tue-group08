@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import concurrency.LockManager;
 import domain.Courier;
 import domain.Customer;
 import domain.Destination;
@@ -13,7 +14,7 @@ import domain.Item;
 import domain.Order;
 import domain.User;
 
-public class OrderMapper {
+public class OrderMapper implements IOrderMapper {
 
     private static final String findAllOrdersForCustomerLazy = "SELECT order_id FROM orders WHERE customer_id = ?";
     private static final String findOrderFromOrderId = "SELECT status, item_size, item_weight, destination_id, customer_id, courier_id FROM orders WHERE order_id = ?";
@@ -36,7 +37,7 @@ public class OrderMapper {
      *            Whether use the lazy mode or not.
      * @return Retrieved Order.
      */
-    public Order checkIdentityMap(int order_id, boolean lazy) {
+    private Order checkIdentityMap(int order_id, boolean lazy) {
         Order order = new Order();
         IdentityMap<Order> iMap = IdentityMap.getInstance(order);
         order = iMap.get(order_id);
@@ -73,7 +74,21 @@ public class OrderMapper {
                     order = new Order(order_id, status, item, destination,
                             (Customer) customer, (Courier) courier);
                     iMap.put(order_id, order);
+                    LockManager.getInstance().acquireReadLock(order);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 } catch (SQLException e) {
+                    try {
+                        DBConnection.dbConnection.rollback();
+                    } catch (SQLException ignored) {
+                        System.err.println("Rollback failed.");
+                    }
+                } finally {
+                    try {
+                        if (DBConnection.dbConnection != null)
+                            DBConnection.dbConnection.close();
+                    } catch (SQLException ignored) {
+                    }
                 }
             }
         }
@@ -101,6 +116,17 @@ public class OrderMapper {
                 orders.add(order);
             }
         } catch (SQLException e) {
+            try {
+                DBConnection.dbConnection.rollback();
+            } catch (SQLException ignored) {
+                System.err.println("Rollback failed.");
+            }
+        } finally {
+            try {
+                if (DBConnection.dbConnection != null)
+                    DBConnection.dbConnection.close();
+            } catch (SQLException ignored) {
+            }
         }
         return orders;
     }
@@ -130,7 +156,17 @@ public class OrderMapper {
             insertStatement.setInt(6, order.getCustomer().getUser_id());
             insertStatement.execute();
         } catch (SQLException e) {
-
+            try {
+                DBConnection.dbConnection.rollback();
+            } catch (SQLException ignored) {
+                System.err.println("Rollback failed.");
+            }
+        } finally {
+            try {
+                if (DBConnection.dbConnection != null)
+                    DBConnection.dbConnection.close();
+            } catch (SQLException ignored) {
+            }
         }
     }
 
@@ -150,6 +186,17 @@ public class OrderMapper {
             updateStatement.setInt(4, order.getOrder_id());
             updateStatement.execute();
         } catch (SQLException e) {
+            try {
+                DBConnection.dbConnection.rollback();
+            } catch (SQLException ignored) {
+                System.err.println("Rollback failed.");
+            }
+        } finally {
+            try {
+                if (DBConnection.dbConnection != null)
+                    DBConnection.dbConnection.close();
+            } catch (SQLException ignored) {
+            }
         }
     }
 
@@ -160,6 +207,17 @@ public class OrderMapper {
             deleteStatement.setInt(1, order.getOrder_id());
             deleteStatement.execute();
         } catch (SQLException e) {
+            try {
+                DBConnection.dbConnection.rollback();
+            } catch (SQLException ignored) {
+                System.err.println("Rollback failed.");
+            }
+        } finally {
+            try {
+                if (DBConnection.dbConnection != null)
+                    DBConnection.dbConnection.close();
+            } catch (SQLException ignored) {
+            }
         }
     }
 
@@ -187,6 +245,17 @@ public class OrderMapper {
                 orders.add(order);
             }
         } catch (SQLException e) {
+            try {
+                DBConnection.dbConnection.rollback();
+            } catch (SQLException ignored) {
+                System.err.println("Rollback failed.");
+            }
+        } finally {
+            try {
+                if (DBConnection.dbConnection != null)
+                    DBConnection.dbConnection.close();
+            } catch (SQLException ignored) {
+            }
         }
         return orders;
     }
@@ -210,6 +279,17 @@ public class OrderMapper {
                 orders.add(order);
             }
         } catch (SQLException e) {
+            try {
+                DBConnection.dbConnection.rollback();
+            } catch (SQLException ignored) {
+                System.err.println("Rollback failed.");
+            }
+        } finally {
+            try {
+                if (DBConnection.dbConnection != null)
+                    DBConnection.dbConnection.close();
+            } catch (SQLException ignored) {
+            }
         }
         return orders;
     }
@@ -228,6 +308,17 @@ public class OrderMapper {
             updateStatement.setInt(3, order.getOrder_id());
             updateStatement.execute();
         } catch (SQLException e) {
+            try {
+                DBConnection.dbConnection.rollback();
+            } catch (SQLException ignored) {
+                System.err.println("Rollback failed.");
+            }
+        } finally {
+            try {
+                if (DBConnection.dbConnection != null)
+                    DBConnection.dbConnection.close();
+            } catch (SQLException ignored) {
+            }
         }
     }
 }

@@ -5,7 +5,8 @@ import java.util.List;
 import datasource.DestinationMapper;
 import datasource.IdentityMap;
 import datasource.KeyTable;
-import datasource.OrderMapper;
+import datasource.IOrderMapper;
+import datasource.OrderLockingMapper;
 import datasource.UnityOfWork;
 
 public class Customer extends User {
@@ -23,22 +24,10 @@ public class Customer extends User {
 
     @Override
     public List<Order> getAllOrders() {
-        OrderMapper mapper = new OrderMapper();
+        IOrderMapper mapper = new OrderLockingMapper();
         orders = mapper.findAllOrdersForCustomer(getUser_id());
         setOrders(orders);
         return orders;
-    }
-
-    public List<Destination> getDestinations() {
-        if (this.destinations == null) {
-            DestinationMapper dMapper = new DestinationMapper();
-            setDestinations(dMapper.findAllAddressForCustomer(getUser_id()));
-        }
-        return this.destinations;
-    }
-
-    public void setDestinations(List<Destination> destinations) {
-        this.destinations = destinations;
     }
 
     public void CreateNewOrder(float item_size, float item_weight,
@@ -110,5 +99,17 @@ public class Customer extends User {
         UnityOfWork.newCurrent();
         UnityOfWork.getCurrent().registerDeleted(order);
         UnityOfWork.getCurrent().commit();
+    }
+
+    public List<Destination> getDestinations() {
+        if (this.destinations == null) {
+            DestinationMapper dMapper = new DestinationMapper();
+            setDestinations(dMapper.findAllAddressForCustomer(getUser_id()));
+        }
+        return this.destinations;
+    }
+
+    public void setDestinations(List<Destination> destinations) {
+        this.destinations = destinations;
     }
 }
