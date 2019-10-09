@@ -22,7 +22,7 @@ public class ParamValidator {
     /**
 	 * Regular Expression: Validate address
 	 */
-    public static final String REGEX_ADDRESS = "^[a-zA-Z]*$";
+    public static final String REGEX_ADDRESS = "^[a-zA-Z]+$";
     
     public static boolean isUsername(String username) {
         return Pattern.matches(REGEX_USERNAME, username);
