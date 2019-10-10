@@ -9,9 +9,9 @@ public class DBConnection {
 //    private static final String DB_PASSWORD = "ZZQ930603";
 
     // remote
-  private static final String DB_CONNECTION = "jdbc:postgresql://ec2-54-83-201-84.compute-1.amazonaws.com:5432/d9lup48l3ne30t";
-  private static final String DB_USER = "gnqgdcwzkcrzgj";
-  private static final String DB_PASSWORD = "9921c2eb0aabd5163ceb5c5d42587eb820f31af9f8286d7d58614422d99a2290";
+    private static final String DB_CONNECTION = "jdbc:postgresql://ec2-54-83-201-84.compute-1.amazonaws.com:5432/d9lup48l3ne30t";
+    private static final String DB_USER = "gnqgdcwzkcrzgj";
+    private static final String DB_PASSWORD = "9921c2eb0aabd5163ceb5c5d42587eb820f31af9f8286d7d58614422d99a2290";
     
     static Connection dbConnection;
 
