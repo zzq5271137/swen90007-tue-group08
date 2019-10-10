@@ -18,9 +18,7 @@ public class DBConnection {
     public static PreparedStatement prepare(String stm) throws SQLException {
         PreparedStatement preparedStatement = null;
         try {
-            while (dbConnection == null) {
-                dbConnection = getDBConnection();
-            }
+            dbConnection = getDBConnection();
 
             preparedStatement = dbConnection.prepareStatement(stm);
         } catch (SQLException e) {
