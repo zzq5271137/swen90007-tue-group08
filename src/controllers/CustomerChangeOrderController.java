@@ -10,9 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import security.AppSession;
+import service.CustomerServices;
 import datasource.IdentityMap;
 import domain.Order;
 import domain.User;
@@ -31,18 +31,20 @@ public class CustomerChangeOrderController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
-            if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
-                String view = "/CustomerOrderList.jsp";
-                User user = AppSession.getUser();
-                List<Order> orders = user.getAllOrders();
 
+    @Override
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        ServletContext servletContext = getServletContext();
+        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
+            if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
+                User user = AppSession.getUser();
+                List<Order> orders = CustomerServices.getAllOrderService(user);
+
+                String view = "/CustomerOrderList.jsp";
                 request.setAttribute("user_id", user.getUser_id());
                 request.setAttribute("orders", orders);
-
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
@@ -53,6 +55,7 @@ public class CustomerChangeOrderController extends HttpServlet {
             response.sendRedirect("Login.jsp");
         }
     }
+
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -60,38 +63,40 @@ public class CustomerChangeOrderController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-    	ServletContext servletContext = getServletContext();
-    	
-    	// Apply Session Pattern & Check authorization 
-    	if (AppSession.isAuthenticated()) {
+        ServletContext servletContext = getServletContext();
+
+        // Apply Session Pattern & Check authorization
+        if (AppSession.isAuthenticated()) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
-            	String status = request.getParameter("status");
+                String status = request.getParameter("status");
                 User user = AppSession.getUser();
-            	int user_id = user.getUser_id();
-                
+                int user_id = user.getUser_id();
+
                 request.setAttribute("user_id", user_id);
-                String view = "/CustomerOrderList.jsp";
-                
-                // Apply MVC pattern 
+                String view = null;
+
+                // Apply MVC pattern
                 // The user is not allowed to change the order unless the status is "Confirmed"
                 if (status.equalsIgnoreCase(Order.SHIPPED_STATUS)) {
-                	view = "/ShippedOrderCannotChange.jsp";
+                    view = "/ShippedOrderCannotChange.jsp";
                 } else if (status.equalsIgnoreCase(Order.DELIVERED_STATUS)) {
-                	view = "/DeliveredOrderCannotChange.jsp";
-                }else {
-                    int order_id = Integer.parseInt(request.getParameter("order_id"));
+                    view = "/DeliveredOrderCannotChange.jsp";
+                } else {
+                    int order_id = Integer
+                            .parseInt(request.getParameter("order_id"));
                     Order order = new Order();
                     order = IdentityMap.getInstance(order).get(order_id);
-                    
+
                     request.setAttribute("order", order);
                     view = "/CustomerChangeOrderDetail.jsp";
                 }
-                RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(view);
+                RequestDispatcher requestDispatcher = servletContext
+                        .getRequestDispatcher(view);
                 requestDispatcher.forward(request, response);
-            }else {
+            } else {
                 response.sendError(403);
             }
-        }else {
+        } else {
             response.sendError(401);
         }
     }

@@ -1,8 +1,6 @@
-package service;
+package security;
 
-import security.ParamValidator;
-
-public class ValidatorCheckService {
+public class InterceptingValidator {
 	
 	/**
 	 * Check Parameters from Login Page form

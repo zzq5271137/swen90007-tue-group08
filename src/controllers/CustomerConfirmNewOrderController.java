@@ -10,12 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import security.AppSession;
-import service.ValidatorCheckService;
-import datasource.IdentityMap;
-import domain.Customer;
+import security.InterceptingValidator;
+import service.CustomerServices;
 import domain.Order;
 import domain.User;
 
@@ -35,14 +33,16 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
         ServletContext servletContext = getServletContext();
-        if (AppSession.isAuthenticated() && AppSession.getUser()!=null) {
+        if (AppSession.isAuthenticated() && AppSession.getUser() != null) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
-                String view = "/CustomerOrderList.jsp";
                 User user = AppSession.getUser();
-                List<Order> orders = user.getAllOrders();
+                List<Order> orders = CustomerServices.getAllOrderService(user);
 
+                String view = "/CustomerOrderList.jsp";
                 request.setAttribute("user_id", user.getUser_id());
                 request.setAttribute("orders", orders);
 
@@ -56,6 +56,7 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
             response.sendRedirect("Login.jsp");
         }
     }
+
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -67,29 +68,31 @@ public class CustomerConfirmNewOrderController extends HttpServlet {
 
         if (AppSession.isAuthenticated()) {
             if (AppSession.hasRole(AppSession.CUSTOMER_ROLE)) {
-            	// get the parameters from request
-           	 	String item_size_string = request.getParameter("item_size");
-           	 	String item_weight_string = request.getParameter("item_weight");
-           	 	String address = request.getParameter("address");
-           	 
-           	 	// check whether the inputs are valid or not
-           	 	ValidatorCheckService vadilator = new ValidatorCheckService();
-           	 	String view = "/CustomerOrderList.jsp";
-                
-                if(!vadilator.checkOrderParam(item_size_string, item_weight_string, address)){
-               	 view = "/InputInvalid.jsp";
-                }else {
-	           	 	float item_size = Float.parseFloat(item_size_string);
-	           	 	float item_weight = Float.parseFloat(item_weight_string);
-	                
-	                User user = AppSession.getUser();
-	                int user_id = user.getUser_id();
-	
-	                ((Customer)user).CreateNewOrder(item_size, item_weight, address);
-	
-	                request.setAttribute("user_id", user_id);
-	                
-	                view = "/CustomerNewOrderSuccess.jsp";
+                // get the parameters from request
+                String item_size_string = request.getParameter("item_size");
+                String item_weight_string = request
+                        .getParameter("item_weight");
+                String address = request.getParameter("address");
+
+                // check whether the inputs are valid or not
+                InterceptingValidator vadilator = new InterceptingValidator();
+                String view = null;
+
+                if (!vadilator.checkOrderParam(item_size_string,
+                        item_weight_string, address)) {
+                    view = "/InputInvalid.jsp";
+                } else {
+                    float item_size = Float.parseFloat(item_size_string);
+                    float item_weight = Float.parseFloat(item_weight_string);
+
+                    User user = AppSession.getUser();
+                    int user_id = user.getUser_id();
+
+                    CustomerServices.createNewOrderService(user, item_size,
+                            item_weight, address);
+
+                    request.setAttribute("user_id", user_id);
+                    view = "/CustomerNewOrderSuccess.jsp";
                 }
                 RequestDispatcher requestDispatcher = servletContext
                         .getRequestDispatcher(view);

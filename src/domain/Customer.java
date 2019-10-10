@@ -30,7 +30,7 @@ public class Customer extends User {
         return orders;
     }
 
-    public void CreateNewOrder(float item_size, float item_weight,
+    public void createNewOrder(float item_size, float item_weight,
             String address) {
         Order order = new Order();
 
@@ -63,7 +63,7 @@ public class Customer extends User {
         UnityOfWork.getCurrent().commit();
     }
 
-    public void ChangeOrderDetail(int order_id, float item_size,
+    public void changeOrderDetail(int order_id, float item_size,
             float item_weight, String address) {
         Order order = new Order();
         IdentityMap<Order> iMap = IdentityMap.getInstance(order);
