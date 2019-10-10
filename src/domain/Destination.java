@@ -4,6 +4,9 @@ public class Destination {
     private int destination_id;
     private String address;
 
+    public Destination() {
+    }
+
     public Destination(int destination_id) {
         this.destination_id = destination_id;
     }
