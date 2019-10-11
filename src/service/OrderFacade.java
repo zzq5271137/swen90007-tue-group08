@@ -1,4 +1,4 @@
-package distribution;
+package service;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import datasource.IOrderMapper;
 import datasource.OrderLockingMapper;
 import domain.Order;
+import domain.OrderDTO;
 
 public class OrderFacade {
 

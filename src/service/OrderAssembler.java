@@ -1,4 +1,4 @@
-package distribution;
+package service;
 
 import java.sql.SQLException;
 
@@ -7,8 +7,11 @@ import datasource.OrderLockingMapper;
 import domain.Courier;
 import domain.Customer;
 import domain.Destination;
+import domain.DestinationDTO;
 import domain.Item;
+import domain.ItemDTO;
 import domain.Order;
+import domain.OrderDTO;
 
 public class OrderAssembler {
 

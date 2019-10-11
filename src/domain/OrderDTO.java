@@ -1,4 +1,4 @@
-package distribution;
+package domain;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
