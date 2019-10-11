@@ -56,7 +56,7 @@ public class SecurePipe {
     /*
      * decryption
      */
-    public static String AESDncode(String encodeRules, String content) {
+    public static String AESDecode(String encodeRules, String content) {
         try {
             KeyGenerator keygen = KeyGenerator.getInstance("AES");
             keygen.init(128, new SecureRandom(encodeRules.getBytes()));
