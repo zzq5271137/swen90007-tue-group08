@@ -3,7 +3,7 @@ This is the repository for SWEN90007 - Software Design and Architecture project.
 
 ****************************** Parcel Delivery System ******************************
 
-* * * * * * * * * * * * * * * * * * * *    Entrance and Log in    * * * * * * * * * * * * * * * * * * * *
+* * * * * * * * * * * * * * * * * * * *  Entrance and Log in    * * * * * * * * * * * * * * * * * * * *
 
 A welcome message displays in the screen as the first page of the system. Click the ‘Login’ button to direct to the user Login page. 
 
@@ -19,7 +19,7 @@ Please use the following account to login our system and feel free to try other 
  
 The system displays a login successful message if the above account has been used. Click the ‘View Your Orders’ button to direct to the home page of this user. 
 
-* * * * * * * * * * * * * * * * * * * *    Customer operations    * * * * * * * * * * * * * * * * * * * *
+* * * * * * * * * * * * * * * * * * * *   Customer operations    * * * * * * * * * * * * * * * * * * * *
 
 The system displays all the orders created by this user after the customer logs in.
 
@@ -32,7 +32,7 @@ Click the ‘Delete’ to remove the order from database.
 
 Click the ‘View Your History Target Address’ to find out all addresses.
 
-* * * * * * * * * * * * * * * * * * * *    Courier operations    * * * * * * * * * * * * * * * * * * * *
+* * * * * * * * * * * * * * * * * * * *   Courier operations    * * * * * * * * * * * * * * * * * * * *
 
 The system displays all the orders assigned to this user after the courier logs in.
 
