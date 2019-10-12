@@ -8,12 +8,12 @@ This is the repository for SWEN90007 - Software Design and Architecture project.
 A welcome message displays in the screen as the first page of the system. Click the ‘Login’ button to direct to the user Login page. 
 
 * Customer Login
-Please use the following account to login our system and feel free to try other password to test the error handling function. 
+<br>Please use the following account to login our system and feel free to try other password to test the error handling function. 
  <br>(1). Login name: customer1, Password: 123456
  <br>(2). Login name: customer2, Password: 456789
 
 * Courier Login
-Please use the following account to login our system and feel free to try other password to test the error handling function. 
+<br>Please use the following account to login our system and feel free to try other password to test the error handling function. 
  <br>(1). Login name: courier1, Password: 123456
  <br>(2). Login name: courier2, Password: 456789
  
