@@ -30,6 +30,11 @@ public class CourierShowDeliveringOrderController extends HttpServlet {
         super();
     }
 
+    /**
+     * If the user uses url to access this page,
+     * 1. no user is authenticated => redirect to login page. 
+     * Otherwise, this will invoke its doPost method.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -41,8 +46,9 @@ public class CourierShowDeliveringOrderController extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
+     * If the user is authenticated and authorized, 
+     * it will display all the orders that are waiting to be delivered after the 
+     * courier logs in.
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)

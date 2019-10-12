@@ -3,6 +3,11 @@ package concurrency;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class shows the basic method of 
+ * acquiring and releasing read and write locks
+ *
+ */
 public class LockManager {
     private final Map<Object, ReadWriteLock> lockMap;
     private static LockManager manger;

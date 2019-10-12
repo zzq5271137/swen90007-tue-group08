@@ -31,6 +31,11 @@ public class CourierPickOrdersController extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     * If the user uses url to access this page,
+     * 1. no user is authenticated => redirect to login page. 
+     * Otherwise, this will invoke its doPost method.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -42,8 +47,9 @@ public class CourierPickOrdersController extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
+     * If the user is authenticated and authorized, 
+     * it will display all the "Confirmed" order after the 
+     * courier clicks the "pick new orders" button.
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)

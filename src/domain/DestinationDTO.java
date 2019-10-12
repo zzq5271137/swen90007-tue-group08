@@ -30,6 +30,12 @@ public class DestinationDTO {
         this.address = address;
     }
 
+    /**
+     * Data Serialization function.
+     * 
+     * @param destinationDTO
+     * @param outputStream
+     */
     public static void toXML(DestinationDTO destinationDTO,
             OutputStream outputStream) {
         XMLEncoder encoder = new XMLEncoder(outputStream);
@@ -37,6 +43,12 @@ public class DestinationDTO {
         encoder.close();
     }
 
+    /**
+     * Data Deserialize function.
+     * 
+     * @param inputStream
+     * @return
+     */
     public static DestinationDTO fromXML(InputStream inputStream) {
         XMLDecoder decoder = new XMLDecoder(inputStream);
         DestinationDTO result = (DestinationDTO) decoder.readObject();

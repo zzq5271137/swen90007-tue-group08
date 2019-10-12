@@ -74,12 +74,24 @@ public class OrderDTO {
         this.courier_id = courier_id;
     }
 
+    /**
+     * Data Serialization function.
+     * 
+     * @param orderDTO
+     * @param outputStream
+     */
     public static void toXML(OrderDTO orderDTO, OutputStream outputStream) {
         XMLEncoder encoder = new XMLEncoder(outputStream);
         encoder.writeObject(orderDTO);
         encoder.close();
     }
 
+    /**
+     * Data De-Serialization function.
+     * 
+     * @param inputStream
+     * @return
+     */
     public static OrderDTO fromXML(InputStream inputStream) {
         XMLDecoder decoder = new XMLDecoder(inputStream);
         OrderDTO result = (OrderDTO) decoder.readObject();

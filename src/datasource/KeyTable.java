@@ -10,6 +10,14 @@ public class KeyTable {
     private static final String findNextIdWithTableName = "SELECT next_id FROM keys WHERE table_name = ? FOR UPDATE";
     private static final String updateNextIdWithTableName = "UPDATE keys SET next_id = ? WHERE table_name = ?";
 
+    /**
+     * it reads the next key value from "tableName" table in database
+     * and increase it by 1 if inserting a new record to the 
+     * corresponded table
+     * 
+     * @param tableName
+     * @return the next id of the new record
+     */
     public static int getKey(String tableName) {
         // get the next key from the table
         PreparedStatement findStatement = null;

@@ -30,6 +30,7 @@ public class Customer extends User {
         return orders;
     }
 
+    // customer creates a new order domain logic
     public void createNewOrder(float item_size, float item_weight,
             String address) {
         Order order = new Order();
@@ -63,6 +64,7 @@ public class Customer extends User {
         UnityOfWork.getCurrent().commit();
     }
 
+ // customer changes an order domain logic
     public void changeOrderDetail(int order_id, float item_size,
             float item_weight, String address) {
         Order order = new Order();
@@ -88,6 +90,7 @@ public class Customer extends User {
         UnityOfWork.getCurrent().commit();
     }
 
+ // customer deletes an order domain logic
     public void deleteOrder(int order_id) {
         Order order = new Order();
         IdentityMap<Order> iMap = IdentityMap.getInstance(order);

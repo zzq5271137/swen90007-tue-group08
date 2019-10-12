@@ -30,6 +30,12 @@ public class CustomerShowOrderController extends HttpServlet {
         super();
     }
 
+    /**
+     * If the user uses url to access this page,
+     * 1. the role of user has no permission => authorization error.
+     * 2. no user is authenticated => redirect to login page. 
+     * Otherwise, the page will transfer to the customer's home page.
+     */
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)

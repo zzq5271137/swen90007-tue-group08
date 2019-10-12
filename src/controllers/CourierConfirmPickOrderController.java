@@ -31,6 +31,12 @@ public class CourierConfirmPickOrderController extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     * If the user uses url to access this page,
+     * 1. the role of user has no permission => authorization error.
+     * 2. no user is authenticated => redirect to login page. 
+     * Otherwise, the page will transfer to courier's "picking orders" page.
+     */
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
@@ -57,8 +63,9 @@ public class CourierConfirmPickOrderController extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
+     * If the user is authenticated and authorized, 
+     * it will show the "pick order successful" message after the 
+     * courier clicks the "pick" button.
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)

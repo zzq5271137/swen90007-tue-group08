@@ -28,6 +28,11 @@ public class CustomerCreateNewOrderController extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     * If the user uses url to access this page,
+     * 1. no user is authenticated => redirect to login page. 
+     * Otherwise, the page will invoke its doPost method.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

@@ -31,6 +31,12 @@ public class CourierDeleteLogController extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     * If the user uses url to access this page,
+     * 1. the role of user has no permission => authorization error.
+     * 2. no user is authenticated => redirect to login page. 
+     * Otherwise, the page will transfer to "courier log list" page.
+     */
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
@@ -57,8 +63,9 @@ public class CourierDeleteLogController extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
+     * If the user is authenticated and authorized, 
+     * it will show the "delete log successful" message after the 
+     * courier clicks the "delete log" button.
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response)

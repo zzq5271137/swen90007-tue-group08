@@ -30,12 +30,23 @@ public class ItemDTO {
         this.item_weight = item_weight;
     }
 
+    /**
+     * Data Serialization function.
+     * 
+     * @param itemDTO
+     * @param outputStream
+     */
     public static void toXML(ItemDTO itemDTO, OutputStream outputStream) {
         XMLEncoder encoder = new XMLEncoder(outputStream);
         encoder.writeObject(itemDTO);
         encoder.close();
     }
 
+    /**
+     * Data De-Serialization function.
+     * @param inputStream
+     * @return
+     */
     public static ItemDTO fromXML(InputStream inputStream) {
         XMLDecoder decoder = new XMLDecoder(inputStream);
         ItemDTO result = (ItemDTO) decoder.readObject();
