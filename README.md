@@ -9,13 +9,13 @@ A welcome message displays in the screen as the first page of the system. Click 
 
 * Customer Login
 Please use the following account to login our system and feel free to try other password to test the error handling function. 
- (1). Login name: customer1, Password: 123456
- (2). Login name: customer2, Password: 456789
+ <br>(1). Login name: customer1, Password: 123456
+ <br>(2). Login name: customer2, Password: 456789
 
 * Courier Login
 Please use the following account to login our system and feel free to try other password to test the error handling function. 
- (1). Login name: courier1, Password: 123456
- (2). Login name: courier2, Password: 456789
+ <br>(1). Login name: courier1, Password: 123456
+ <br>(2). Login name: courier2, Password: 456789
  
 The system displays a login successful message if the above account has been used. Click the ‘View Your Orders’ button to direct to the home page of this user. 
 
@@ -26,7 +26,7 @@ The system displays all the orders created by this user after the customer logs 
 Click the ‘Add New Order’ to create a new order —> input two numbers for item size and weight, and a string for destination
     - Note the size and weight should be within 1 ~ 999, and 0-2 decimal number is permitted. Only input alphabetic characters in destination. -> Click ‘Confirm’ to go back to home page.
 
-Click the ‘Change Detail’ to make changes to some changes. 
+Click the ‘Change Detail’ to make changes to an order. 
 
 Click the ‘Delete’ to remove the order from database.
 
